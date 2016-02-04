@@ -1,0 +1,195 @@
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
+import java.awt.Font;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
+import javax.swing.SwingConstants;
+import javax.swing.JTabbedPane;
+import javax.swing.JButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.border.BevelBorder;
+import java.awt.SystemColor;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.ImageIcon;
+
+public class MainView extends JFrame {
+
+	private JPanel contentPane;
+	private JTable tableTodayEntry;
+	private JTable tableWeekEntry;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					MainView frame = new MainView();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public MainView() {
+		setTitle("Brand Leadership Circle - Time Tracking");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 1040, 503);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JLabel labelCompanyTitle = new JLabel("Brand Leadership Circle");
+		labelCompanyTitle.setFont(new Font("Lucida Grande", Font.BOLD, 23));
+		labelCompanyTitle.setBounds(6, 6, 302, 44);
+		contentPane.add(labelCompanyTitle);
+		
+		JPanel panelUserInformation = new JPanel();
+		panelUserInformation.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		panelUserInformation.setBounds(696, 6, 326, 99);
+		contentPane.add(panelUserInformation);
+		panelUserInformation.setLayout(null);
+		
+		JLabel labelUserIcon = new JLabel("");
+		labelUserIcon.setIcon(new ImageIcon("/Users/u-ak/Desktop/IPA 2016/Bilder : Screenshots/default-user-avatar.png"));
+		labelUserIcon.setBounds(6, 6, 90, 87);
+		panelUserInformation.add(labelUserIcon);
+		
+		JLabel labelLoggedInAs = new JLabel("Angemeldet als");
+		labelLoggedInAs.setHorizontalAlignment(SwingConstants.CENTER);
+		labelLoggedInAs.setBounds(97, 16, 223, 16);
+		panelUserInformation.add(labelLoggedInAs);
+		
+		JLabel labelUserEmail = new JLabel("N/A");
+		labelUserEmail.setHorizontalAlignment(SwingConstants.CENTER);
+		labelUserEmail.setBounds(97, 41, 223, 16);
+		panelUserInformation.add(labelUserEmail);
+		
+		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setBounds(6, 106, 1028, 369);
+		contentPane.add(tabbedPane);
+		
+		JPanel panelTagesAnsicht = new JPanel();
+		tabbedPane.addTab("Tagesansicht", null, panelTagesAnsicht, null);
+		panelTagesAnsicht.setLayout(null);
+		
+		JPanel panelProjectBox = new JPanel();
+		panelProjectBox.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
+		panelProjectBox.setBounds(40, 23, 219, 34);
+		panelTagesAnsicht.add(panelProjectBox);
+		panelProjectBox.setLayout(null);
+		
+		JLabel labelProjectBoxDisplay = new JLabel("N/A");
+		labelProjectBoxDisplay.setFont(new Font("Lucida Grande", Font.PLAIN, 11));
+		labelProjectBoxDisplay.setBounds(6, 6, 207, 22);
+		panelProjectBox.add(labelProjectBoxDisplay);
+		labelProjectBoxDisplay.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		JPanel panelWorkpackgeBox = new JPanel();
+		panelWorkpackgeBox.setLayout(null);
+		panelWorkpackgeBox.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
+		panelWorkpackgeBox.setBounds(307, 23, 219, 34);
+		panelTagesAnsicht.add(panelWorkpackgeBox);
+		
+		JLabel labelWorkpackageBoxDisplay = new JLabel("N/A");
+		labelWorkpackageBoxDisplay.setHorizontalAlignment(SwingConstants.CENTER);
+		labelWorkpackageBoxDisplay.setFont(new Font("Lucida Grande", Font.PLAIN, 11));
+		labelWorkpackageBoxDisplay.setBounds(6, 6, 207, 22);
+		panelWorkpackgeBox.add(labelWorkpackageBoxDisplay);
+		
+		JLabel lblProjekt = new JLabel("Projekt");
+		lblProjekt.setFont(new Font("Lucida Grande", Font.PLAIN, 11));
+		lblProjekt.setHorizontalAlignment(SwingConstants.LEFT);
+		lblProjekt.setBounds(40, 6, 94, 16);
+		panelTagesAnsicht.add(lblProjekt);
+		
+		JLabel labelWorkpackagBox = new JLabel("Workpackage");
+		labelWorkpackagBox.setHorizontalAlignment(SwingConstants.LEFT);
+		labelWorkpackagBox.setFont(new Font("Lucida Grande", Font.PLAIN, 11));
+		labelWorkpackagBox.setBounds(307, 5, 94, 16);
+		panelTagesAnsicht.add(labelWorkpackagBox);
+		
+		JButton buttonChooseProject = new JButton("Projekt Auswählen");
+		buttonChooseProject.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		buttonChooseProject.setBounds(805, 12, 196, 45);
+		panelTagesAnsicht.add(buttonChooseProject);
+		
+		JButton buttonChooseWorkpackage = new JButton("Workpackage Auswählen");
+		buttonChooseWorkpackage.setEnabled(false);
+		buttonChooseWorkpackage.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		buttonChooseWorkpackage.setBounds(805, 69, 196, 45);
+		panelTagesAnsicht.add(buttonChooseWorkpackage);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(6, 61, 786, 256);
+		panelTagesAnsicht.add(scrollPane);
+		
+		tableTodayEntry = new JTable();
+		scrollPane.setViewportView(tableTodayEntry);
+		
+		JPanel panel = new JPanel();
+		panel.setBackground(SystemColor.window);
+		panel.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
+		panel.setBounds(805, 152, 196, 152);
+		panelTagesAnsicht.add(panel);
+		panel.setLayout(null);
+		
+		JButton buttonCreateEntry = new JButton("Erfassen");
+		buttonCreateEntry.setEnabled(false);
+		buttonCreateEntry.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		buttonCreateEntry.setBounds(6, 6, 184, 39);
+		panel.add(buttonCreateEntry);
+		
+		JButton buttonUpdateEntry = new JButton("Bearbeiten");
+		buttonUpdateEntry.setEnabled(false);
+		buttonUpdateEntry.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		buttonUpdateEntry.setBounds(6, 57, 184, 39);
+		panel.add(buttonUpdateEntry);
+		
+		JButton buttonDeleteEntry = new JButton("Löschen");
+		buttonDeleteEntry.setEnabled(false);
+		buttonDeleteEntry.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		buttonDeleteEntry.setBounds(6, 108, 184, 39);
+		panel.add(buttonDeleteEntry);
+		
+		JPanel panelWochenAnsicht = new JPanel();
+		tabbedPane.addTab("Wochenansicht", null, panelWochenAnsicht, null);
+		panelWochenAnsicht.setLayout(null);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(6, 6, 995, 311);
+		panelWochenAnsicht.add(scrollPane_1);
+		
+		tableWeekEntry = new JTable();
+		scrollPane_1.setViewportView(tableWeekEntry);
+	}
+}
