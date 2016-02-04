@@ -15,7 +15,7 @@ import com.toedter.calendar.JDateChooser;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class updateView extends JDialog {
+public class entryInsertView extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private Rest restfunction;
@@ -23,7 +23,7 @@ public class updateView extends JDialog {
 	private JTextField textField_1;
 	private JTextField textField_2;
 
-	public updateView(Rest restfunction) {
+	public entryInsertView(Rest restfunction) {
 		setUndecorated(true);
 		
 		this.restfunction = restfunction;
@@ -39,13 +39,13 @@ public class updateView extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		{
-			JLabel lblBearbeiten = new JLabel("Bearbeiten");
+			JLabel lblBearbeiten = new JLabel("Leistungserfassung");
 			lblBearbeiten.setFont(new Font("Lucida Grande", Font.PLAIN, 23));
 			lblBearbeiten.setBounds(18, 6, 272, 44);
 			contentPanel.add(lblBearbeiten);
 		}
 		{
-			JButton btnErfassen = new JButton("Speichern");
+			JButton btnErfassen = new JButton("Erfassen");
 			btnErfassen.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					

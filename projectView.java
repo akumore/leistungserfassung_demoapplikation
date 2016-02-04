@@ -131,12 +131,12 @@ public class projectView extends JDialog {
 		btnAuswahl.setBounds(6, 294, 117, 29);
 		contentPanel.add(btnAuswahl);
 		
-		JButton button = new JButton("Auswahl");
-		button.addActionListener(new ActionListener() {
+		JButton buttonAbbrechen = new JButton("Abbrechen");
+		buttonAbbrechen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		button.setBounds(289, 294, 117, 29);
-		contentPanel.add(button);
+		buttonAbbrechen.setBounds(289, 294, 117, 29);
+		contentPanel.add(buttonAbbrechen);
 	}
 }
