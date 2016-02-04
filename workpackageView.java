@@ -34,9 +34,11 @@ public class workpackageView extends JDialog {
 	public workpackageView(Rest restfunction) {
 		
 		this.restfunction = restfunction;
-		
-		
+		setResizable(false);
 		setModal(true);
+		
+		setLocationRelativeTo(null);
+
 		setUndecorated(true);
 		setBounds(100, 100, 412, 329);
 		getContentPane().setLayout(new BorderLayout());
