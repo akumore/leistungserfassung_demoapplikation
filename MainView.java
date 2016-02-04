@@ -24,10 +24,10 @@ public class MainView extends JFrame {
 	private JPanel contentPane;
 	private JTable tableTodayEntry;
 	private JTable tableWeekEntry;
+	
+	
+	private Rest restfunction = new Rest();
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -145,6 +145,45 @@ public class MainView extends JFrame {
 		panelTagesAnsicht.add(scrollPane);
 		
 		tableTodayEntry = new JTable();
+		tableTodayEntry.setModel(new javax.swing.table.DefaultTableModel(
+	            new Object [][] {
+
+	            },
+	            new String [] {
+	                "Entry ID", "Entry Subject", "Projekt ID", "Workpackage", "Datum", "Startzeit", "Endzeit", "Stunden"
+	            }
+	        ) {
+				private static final long serialVersionUID = -5060001140943749394L;
+				@SuppressWarnings("rawtypes")
+				Class[] types = new Class [] {
+	                java.lang.String.class,
+	                java.lang.String.class,
+	                java.lang.String.class,
+	                java.lang.String.class,
+	                java.lang.String.class,
+	                java.lang.String.class,
+	                java.lang.String.class,
+	                java.lang.String.class
+	            };
+	            boolean[] canEdit = new boolean [] {
+	                false,
+	                false,
+	                false,
+	                false,
+	                false,
+	                false,
+	                false,
+	                false
+	            };
+
+	            public Class<?> getColumnClass(int columnIndex) {
+	                return types [columnIndex];
+	            }
+
+	            public boolean isCellEditable(int rowIndex, int columnIndex) {
+	                return canEdit [columnIndex];
+	            }
+	        });		
 		scrollPane.setViewportView(tableTodayEntry);
 		
 		JPanel panel = new JPanel();
@@ -190,6 +229,45 @@ public class MainView extends JFrame {
 		panelWochenAnsicht.add(scrollPane_1);
 		
 		tableWeekEntry = new JTable();
+		tableWeekEntry.setModel(new javax.swing.table.DefaultTableModel(
+	            new Object [][] {
+
+	            },
+	            new String [] {
+	                "Entry ID", "Entry Subject", "Projekt ID", "Workpackage", "Datum", "Startzeit", "Endzeit", "Stunden"
+	            }
+	        ) {
+				private static final long serialVersionUID = -5060001140943749394L;
+				@SuppressWarnings("rawtypes")
+				Class[] types = new Class [] {
+	                java.lang.String.class,
+	                java.lang.String.class,
+	                java.lang.String.class,
+	                java.lang.String.class,
+	                java.lang.String.class,
+	                java.lang.String.class,
+	                java.lang.String.class,
+	                java.lang.String.class
+	            };
+	            boolean[] canEdit = new boolean [] {
+	                false,
+	                false,
+	                false,
+	                false,
+	                false,
+	                false,
+	                false,
+	                false
+	            };
+
+	            public Class<?> getColumnClass(int columnIndex) {
+	                return types [columnIndex];
+	            }
+
+	            public boolean isCellEditable(int rowIndex, int columnIndex) {
+	                return canEdit [columnIndex];
+	            }
+	        });
 		scrollPane_1.setViewportView(tableWeekEntry);
 	}
 }
