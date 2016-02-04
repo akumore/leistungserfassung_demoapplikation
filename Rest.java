@@ -45,6 +45,8 @@ public class Rest {
     private List<Project> projects;
     private List<WorkPackage> packages;
     
+    private boolean authSuccess = false;
+    
 
 	public Rest() {
 		benutzer = new User();
@@ -62,6 +64,7 @@ public class Rest {
     
     public WorkPackage getChosenWorkPackage() { return chosenWorkPackage; }
     
+    public boolean getAuthSuccess() { return authSuccess; }
     
     // Setters
     public void setUser(User benutzer) { this.benutzer = benutzer; }
@@ -70,6 +73,7 @@ public class Rest {
     
     public void setChosenWorkPackage(WorkPackage cWorkPackage) { this.chosenWorkPackage = cWorkPackage; }
     
+    public void setAuthSuccess(boolean b) { this.authSuccess = b; }
     
     public void setupRest() {
     	
@@ -131,8 +135,23 @@ public class Rest {
         System.out.println("access token/session ID: "+loginAccessToken);
         System.out.println("baseUri: "+ baseUri);        
         
+        queryUsername();
+        queryAccount();
+        queryContact();
+        
+        System.out.println("Benutzer: " + 
+        					benutzer.getUserId() + 
+        					" " + 
+        					benutzer.getUsername() +
+        					" " +
+        					benutzer.getAccountId() +
+        					" " +
+        					benutzer.getInternalContactId());
+        		
+        
         //release connection
         httpPost.releaseConnection();
+        setAuthSuccess(true);
     }
 
     public void queryUsername() {
@@ -160,9 +179,6 @@ public class Rest {
                       JSONArray j = json.getJSONArray("records");
                       for (int i = 0; i < j.length(); i++) {
                         benutzer.setUserId(json.getJSONArray("records").getJSONObject(i).getString("Id"));
-                        String LOL = json.getJSONArray("records").getJSONObject(i).getString("Name");
-                        System.out.println("ID des Benutzers gesetzt : " + benutzer.getUserId());
-                        System.out.println(LOL);
                       }
                   } catch (JSONException je) {
                       System.out.println(je.getMessage());
@@ -178,6 +194,84 @@ public class Rest {
           }
       }
 
+    public void queryAccount() {
+        System.out.println("\n_______________ Account QUERY _______________");
+        try {
+          HttpClient httpClient = HttpClientBuilder.create().build();
+          
+          String formatedUserId = "'" + benutzer.getUserId() + "'";
+          System.out.println(formatedUserId);
+              String uri = baseUri + "/query?q=SELECT+Id,+Name+,+User__c+FROM+Account+WHERE+User__c=" + formatedUserId;
+          
+          System.out.println("Query URL: " + uri);
+              HttpGet httpGet = new HttpGet(uri);
+              System.out.println("oauthHeader2: " + oauthHeader);
+              httpGet.addHeader(oauthHeader);
+              httpGet.addHeader(prettyPrintHeader);
+              
+              HttpResponse response = httpClient.execute(httpGet);
+              int statusCode = response.getStatusLine().getStatusCode();
+              if (statusCode == 200) {
+                  String response_string = EntityUtils.toString(response.getEntity());
+                  try {
+                      JSONObject json = new JSONObject(response_string);
+                      System.out.println("JSON result of Query:\n" + json.toString(1));
+                      JSONArray j = json.getJSONArray("records");
+                      for (int i = 0; i < j.length(); i++) {  
+                        benutzer.setAccountId(json.getJSONArray("records").getJSONObject(i).getString("Id"));
+                      }
+                  } catch (JSONException je) {
+                      System.out.println(je.getMessage());
+                  }
+              } else {
+                  System.out.println("Query was unsuccessful. Status code returned is " + statusCode);
+                  System.out.println("An error has occured. Http status: " + response.getStatusLine().getStatusCode());
+                  System.out.println(getBody(response.getEntity().getContent()));
+                  System.exit(-1);
+              }
+          } catch (IOException | NullPointerException ioe) {
+              System.out.println(ioe.getMessage());
+          }
+      }
+
+    public void queryContact() {
+        System.out.println("\n_______________ Contact QUERY _______________");
+        try {
+          HttpClient httpClient = HttpClientBuilder.create().build();
+          
+          String formatedAccountId = "'" + benutzer.getAccountId() + "'";
+          String uri = baseUri + "/query?q=SELECT+Id,+Name,+Account.Name+FROM+Contact+WHERE+Account.Id=" + formatedAccountId;
+          
+          System.out.println("Query URL: " + uri);
+              HttpGet httpGet = new HttpGet(uri);
+              System.out.println("oauthHeader2: " + oauthHeader);
+              httpGet.addHeader(oauthHeader);
+              httpGet.addHeader(prettyPrintHeader);
+              
+              HttpResponse response = httpClient.execute(httpGet);
+              int statusCode = response.getStatusLine().getStatusCode();
+              if (statusCode == 200) {
+                  String response_string = EntityUtils.toString(response.getEntity());
+                  try {
+                      JSONObject json = new JSONObject(response_string);
+                      System.out.println("JSON result of Query:\n" + json.toString(1));
+                      JSONArray j = json.getJSONArray("records");
+                      for (int i = 0; i < j.length(); i++) {  
+                        benutzer.setInternalContactId(json.getJSONArray("records").getJSONObject(i).getString("Id"));
+                      }
+                  } catch (JSONException je) {
+                      System.out.println(je.getMessage());
+                  }
+              } else {
+                  System.out.println("Query was unsuccessful. Status code returned is " + statusCode);
+                  System.out.println("An error has occured. Http status: " + response.getStatusLine().getStatusCode());
+                  System.out.println(getBody(response.getEntity().getContent()));
+                  System.exit(-1);
+              }
+          } catch (IOException | NullPointerException ioe) {
+              System.out.println(ioe.getMessage());
+          }
+      }
     
     private static String getBody(InputStream inputStream) {
         String result = "";

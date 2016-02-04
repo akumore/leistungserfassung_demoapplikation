@@ -1,10 +1,11 @@
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
@@ -21,9 +22,12 @@ import javax.swing.ImageIcon;
 
 public class MainView extends JFrame {
 
+
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTable tableTodayEntry;
 	private JTable tableWeekEntry;
+	private loginView loginVw;
 	
 	
 	private Rest restfunction = new Rest();
@@ -34,6 +38,7 @@ public class MainView extends JFrame {
 				try {
 					MainView frame = new MainView();
 					frame.setVisible(true);
+					frame.setLocationRelativeTo(null);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -41,10 +46,14 @@ public class MainView extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
+
 	public MainView() {
+		
+		loginVw = new loginView(restfunction);
+		loginVw.setLocationRelativeTo(null);
+		loginSequence();
+		
+		
 		setTitle("Brand Leadership Circle - Time Tracking");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1040, 503);
@@ -270,4 +279,14 @@ public class MainView extends JFrame {
 	        });
 		scrollPane_1.setViewportView(tableWeekEntry);
 	}
+	
+	
+	private void loginSequence() {
+		loginVw.setVisible(true);
+		if(!restfunction.getAuthSuccess()) {
+			JOptionPane.showMessageDialog(loginVw, "Invalid username or password", "Login", JOptionPane.ERROR_MESSAGE);
+			loginSequence();
+		}
+	}
+	
 }

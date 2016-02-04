@@ -17,6 +17,8 @@ import java.awt.event.ActionEvent;
 
 public class updateView extends JDialog {
 
+
+	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private Rest restfunction;
 	private JTextField textFieldStartTime;
