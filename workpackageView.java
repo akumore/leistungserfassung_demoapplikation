@@ -22,7 +22,7 @@ import javax.swing.RowFilter;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class projectView extends JDialog {
+public class workpackageView extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTable tableProjects;
@@ -31,7 +31,7 @@ public class projectView extends JDialog {
 	DefaultTableModel tModel;
 	
 
-	public projectView(Rest restfunction) {
+	public workpackageView(Rest restfunction) {
 		
 		this.restfunction = restfunction;
 		
@@ -44,13 +44,13 @@ public class projectView extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		
-		JLabel labelDialogTitle = new JLabel("Projektauswahl");
+		JLabel labelDialogTitle = new JLabel("Workpackage auswählen");
 		labelDialogTitle.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
-		labelDialogTitle.setBounds(6, 6, 210, 43);
+		labelDialogTitle.setBounds(6, 6, 267, 43);
 		contentPanel.add(labelDialogTitle);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(16, 61, 376, 186);
+		scrollPane.setBounds(16, 61, 345, 186);
 		contentPanel.add(scrollPane);
 		
 		tableProjects = new JTable();
@@ -60,18 +60,17 @@ public class projectView extends JDialog {
 
 	            },
 	            new String [] {
-	                "Project-ID", "Projekt-Nr","Projektbezeichnung"
+	                "Workpackage-ID", "Bezeichnung"
 	            }
 	        ) {
 				private static final long serialVersionUID = -5060001140943749394L;
 				@SuppressWarnings("rawtypes")
 				Class[] types = new Class [] {
-	                java.lang.String.class, java.lang.String.class, java.lang.String.class
+	                java.lang.String.class, java.lang.String.class
 	            };
 	            boolean[] canEdit = new boolean [] {
-	                false, false, false
+	                false, false
 	            };
-
 	            public Class<?> getColumnClass(int columnIndex) {
 	                return types [columnIndex];
 	            }
