@@ -24,13 +24,14 @@ import org.json.JSONTokener;
 
 public class Rest {
 
-	// REST API Salesforce variable decleration.
+	
     private final String LOGINURL     = "https://test.salesforce.com";
     private final String GRANTSERVICE = "/services/oauth2/token?grant_type=password";
     private final String CLIENTID     = "3MVG98RqVesxRgQ6Z7Y7R1sNd0r3MCkY7GvFo9whQ8C_M2cpVtMBUCGP8VPo7qffBeOyUxUOrAkvD4ZvNkBbk";
     private final String CLIENTSECRET = "599090607021828048";
     private final String REST_ENDPOINT = "/services/data" ;
     private final String API_VERSION = "/v34.0" ;
+    
     private String baseUri;
     private Header oauthHeader;
     private final Header prettyPrintHeader = new BasicHeader("X-PrettyPrint", "1");
@@ -39,17 +40,16 @@ public class Rest {
     private Project chosenProject;
     private WorkPackage chosenWorkPackage;
     
-    // Declaration of Auto collection list.
+
     private List<Entry> entries;
     private List<Project> projects;
     private List<WorkPackage> packages;
     
 
-
-	// Default Constructor
 	public Rest() {
 		benutzer = new User();
 	}
+	
 	
 	// Getters
 	public User getUser() { return benutzer; }
@@ -72,14 +72,9 @@ public class Rest {
     
     
     public void setupRest() {
-        /*
-    	 *	Establishing the REST functions, assembling the URL for requests,
-    	 *	Checking if the login credentials allow for user authentication.
-    	 */
-
+    	
+    	// Login-URL zusammensetzen
         HttpClient httpclient = HttpClientBuilder.create().build();
-
-        // Assemble the login request URL
         String loginURL = LOGINURL +
                           GRANTSERVICE +
                           "&client_id=" + CLIENTID +
@@ -87,11 +82,11 @@ public class Rest {
                           "&username=" + benutzer.getUsername() +
                           "&password=" + benutzer.getPassword();
 
-        // Login requests must be POSTs
+        // Login requests müssen POST-Methoden sein
         HttpPost httpPost = new HttpPost(loginURL);
         HttpResponse response = null;
 
-        // Execute the login POST request
+        // Login POST-Request ausführen
         try {
             response = httpclient.execute(httpPost);
         } catch (ClientProtocolException cpException) {
