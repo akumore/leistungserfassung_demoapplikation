@@ -24,13 +24,14 @@ import org.json.JSONTokener;
 
 public class Rest {
 
-	// REST API Salesforce variable decleration.
+	
     private final String LOGINURL     = "https://test.salesforce.com";
     private final String GRANTSERVICE = "/services/oauth2/token?grant_type=password";
     private final String CLIENTID     = "3MVG98RqVesxRgQ6Z7Y7R1sNd0r3MCkY7GvFo9whQ8C_M2cpVtMBUCGP8VPo7qffBeOyUxUOrAkvD4ZvNkBbk";
     private final String CLIENTSECRET = "599090607021828048";
     private final String REST_ENDPOINT = "/services/data" ;
     private final String API_VERSION = "/v34.0" ;
+    
     private String baseUri;
     private Header oauthHeader;
     private final Header prettyPrintHeader = new BasicHeader("X-PrettyPrint", "1");
@@ -39,17 +40,16 @@ public class Rest {
     private Project chosenProject;
     private WorkPackage chosenWorkPackage;
     
-    // Declaration of Auto collection list.
+
     private List<Entry> entries;
     private List<Project> projects;
     private List<WorkPackage> packages;
     
 
-
-	// Default Constructor
 	public Rest() {
 		benutzer = new User();
 	}
+	
 	
 	// Getters
 	public User getUser() { return benutzer; }
@@ -72,14 +72,9 @@ public class Rest {
     
     
     public void setupRest() {
-        /*
-    	 *	Establishing the REST functions, assembling the URL for requests,
-    	 *	Checking if the login credentials allow for user authentication.
-    	 */
-
+    	
+    	// Login-URL zusammensetzen
         HttpClient httpclient = HttpClientBuilder.create().build();
-
-        // Assemble the login request URL
         String loginURL = LOGINURL +
                           GRANTSERVICE +
                           "&client_id=" + CLIENTID +
@@ -87,11 +82,11 @@ public class Rest {
                           "&username=" + benutzer.getUsername() +
                           "&password=" + benutzer.getPassword();
 
-        // Login requests must be POSTs
+        // Login requests müssen POST-Methoden sein
         HttpPost httpPost = new HttpPost(loginURL);
         HttpResponse response = null;
 
-        // Execute the login POST request
+        // Login POST-Request ausführen
         try {
             response = httpclient.execute(httpPost);
         } catch (ClientProtocolException cpException) {
@@ -99,8 +94,8 @@ public class Rest {
         } catch (IOException ioException) {
             System.out.println(ioException.getMessage());
         }
-
-        // verify response is HTTP OK
+        
+        // Überprüfen ob das Request erfolgreich war
         final int statusCode = response.getStatusLine().getStatusCode();
         if (statusCode != HttpStatus.SC_OK) {
             System.out.println("Error authenticating to Force.com: "+statusCode);
@@ -128,7 +123,7 @@ public class Rest {
         }
 
         baseUri = loginInstanceUrl + REST_ENDPOINT + API_VERSION ;
-        oauthHeader = new BasicHeader("Authorization", "OAuth " + loginAccessToken) ;
+        oauthHeader = new BasicHeader("Authorization", "OAuth " + loginAccessToken);
         System.out.println("oauthHeader1: " + oauthHeader);
         System.out.println("\n" + response.getStatusLine());
         System.out.println("Successful login");
@@ -139,6 +134,65 @@ public class Rest {
         //release connection
         httpPost.releaseConnection();
     }
+
+    public void queryUsername() {
+        System.out.println("\n_______________ UserName QUERY _______________");
+        try {
+          HttpClient httpClient = HttpClientBuilder.create().build();
+          
+          String username = "'" + benutzer.getUsername() + "'";
+          
+              String uri = baseUri + "/query?q=SELECT+Id,+Name,+Username+FROM+User+WHERE+Username=" + username;
+
+          System.out.println("Query URL: " + uri);
+              HttpGet httpGet = new HttpGet(uri);
+              System.out.println("oauthHeader2: " + oauthHeader);
+              httpGet.addHeader(oauthHeader);
+              httpGet.addHeader(prettyPrintHeader);
+              
+              HttpResponse response = httpClient.execute(httpGet);
+              int statusCode = response.getStatusLine().getStatusCode();
+              if (statusCode == 200) {
+                  String response_string = EntityUtils.toString(response.getEntity());
+                  try {
+                      JSONObject json = new JSONObject(response_string);
+                      System.out.println("JSON result of Query:\n" + json.toString(1));
+                      JSONArray j = json.getJSONArray("records");
+                      for (int i = 0; i < j.length(); i++) {
+                        benutzer.setUserId(json.getJSONArray("records").getJSONObject(i).getString("Id"));
+                        String LOL = json.getJSONArray("records").getJSONObject(i).getString("Name");
+                        System.out.println("ID des Benutzers gesetzt : " + benutzer.getUserId());
+                        System.out.println(LOL);
+                      }
+                  } catch (JSONException je) {
+                      System.out.println(je.getMessage());
+                  }
+              } else {
+                  System.out.println("Query was unsuccessful. Status code returned is " + statusCode);
+                  System.out.println("An error has occured. Http status: " + response.getStatusLine().getStatusCode());
+                  System.out.println(getBody(response.getEntity().getContent()));
+                  System.exit(-1);
+              }
+          } catch (IOException | NullPointerException ioe) {
+              System.out.println(ioe.getMessage());
+          }
+      }
+
+    
+    private static String getBody(InputStream inputStream) {
+        String result = "";
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(inputStream))) {
+            String inputLine;
+            while ( (inputLine = in.readLine() ) != null ) {
+                result += inputLine;
+                result += "\n";
+            }
+        } catch (IOException ioe) {
+            System.out.println(ioe.getMessage());
+        }
+        return result;
+    }
+    
 }
     
  
