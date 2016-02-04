@@ -19,9 +19,9 @@ public class updateView extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private Rest restfunction;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
+	private JTextField textFieldStartTime;
+	private JTextField textFieldEndTime;
+	private JTextField textFieldSubject;
 
 	public updateView(Rest restfunction) {
 		setUndecorated(true);
@@ -39,85 +39,85 @@ public class updateView extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		{
-			JLabel lblBearbeiten = new JLabel("Bearbeiten");
-			lblBearbeiten.setFont(new Font("Lucida Grande", Font.PLAIN, 23));
-			lblBearbeiten.setBounds(18, 6, 272, 44);
-			contentPanel.add(lblBearbeiten);
+			JLabel labelDialogTitle = new JLabel("Bearbeiten");
+			labelDialogTitle.setFont(new Font("Lucida Grande", Font.PLAIN, 23));
+			labelDialogTitle.setBounds(18, 6, 272, 44);
+			contentPanel.add(labelDialogTitle);
 		}
 		{
-			JButton btnErfassen = new JButton("Speichern");
-			btnErfassen.addActionListener(new ActionListener() {
+			JButton buttonSave = new JButton("Speichern");
+			buttonSave.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					
 				}
 			});
-			btnErfassen.setBounds(6, 207, 117, 29);
-			contentPanel.add(btnErfassen);
+			buttonSave.setBounds(6, 207, 117, 29);
+			contentPanel.add(buttonSave);
 		}
 		{
-			JButton btnAbbrechen = new JButton("Abbrechen");
-			btnAbbrechen.addActionListener(new ActionListener() {
+			JButton buttonCancel = new JButton("Abbrechen");
+			buttonCancel.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					dispose();
 				}
 			});
-			btnAbbrechen.setBounds(285, 207, 117, 29);
-			contentPanel.add(btnAbbrechen);
+			buttonCancel.setBounds(285, 207, 117, 29);
+			contentPanel.add(buttonCancel);
 		}
 		
-		JPanel panel = new JPanel();
-		panel.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
-		panel.setBounds(18, 53, 170, 29);
-		contentPanel.add(panel);
-		panel.setLayout(null);
+		JPanel panelChosenProjectBox = new JPanel();
+		panelChosenProjectBox.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
+		panelChosenProjectBox.setBounds(18, 53, 170, 29);
+		contentPanel.add(panelChosenProjectBox);
+		panelChosenProjectBox.setLayout(null);
 		
-		JLabel lblNa = new JLabel("N/A");
-		lblNa.setFont(new Font("Lucida Grande", Font.PLAIN, 9));
-		lblNa.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNa.setBounds(6, 6, 158, 16);
-		panel.add(lblNa);
+		JLabel labelChosenProject = new JLabel("N/A");
+		labelChosenProject.setFont(new Font("Lucida Grande", Font.PLAIN, 9));
+		labelChosenProject.setHorizontalAlignment(SwingConstants.CENTER);
+		labelChosenProject.setBounds(6, 6, 158, 16);
+		panelChosenProjectBox.add(labelChosenProject);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
-		panel_1.setBounds(222, 53, 170, 29);
-		contentPanel.add(panel_1);
-		panel_1.setLayout(null);
+		JPanel panelChosenWorkpackageBox = new JPanel();
+		panelChosenWorkpackageBox.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
+		panelChosenWorkpackageBox.setBounds(222, 53, 170, 29);
+		contentPanel.add(panelChosenWorkpackageBox);
+		panelChosenWorkpackageBox.setLayout(null);
 		
-		JLabel label = new JLabel("N/A");
-		label.setHorizontalAlignment(SwingConstants.CENTER);
-		label.setFont(new Font("Lucida Grande", Font.PLAIN, 9));
-		label.setBounds(6, 6, 158, 16);
-		panel_1.add(label);
+		JLabel labelChosenWorkpackage = new JLabel("N/A");
+		labelChosenWorkpackage.setHorizontalAlignment(SwingConstants.CENTER);
+		labelChosenWorkpackage.setFont(new Font("Lucida Grande", Font.PLAIN, 9));
+		labelChosenWorkpackage.setBounds(6, 6, 158, 16);
+		panelChosenWorkpackageBox.add(labelChosenWorkpackage);
 		
-		textField = new JTextField();
-		textField.setBounds(176, 111, 62, 26);
-		contentPanel.add(textField);
-		textField.setColumns(10);
+		textFieldStartTime = new JTextField();
+		textFieldStartTime.setBounds(176, 111, 62, 26);
+		contentPanel.add(textFieldStartTime);
+		textFieldStartTime.setColumns(10);
 		
-		JDateChooser dateChooser = new JDateChooser();
-		dateChooser.setBounds(236, 111, 156, 26);
-		contentPanel.add(dateChooser);
+		JDateChooser datePicker = new JDateChooser();
+		datePicker.setBounds(236, 111, 156, 26);
+		contentPanel.add(datePicker);
 		
-		JLabel lblStartzeitDatum = new JLabel("Startzeit / Datum");
-		lblStartzeitDatum.setBounds(18, 116, 117, 16);
-		contentPanel.add(lblStartzeitDatum);
+		JLabel labelStartTimeDate = new JLabel("Startzeit / Datum");
+		labelStartTimeDate.setBounds(18, 116, 117, 16);
+		contentPanel.add(labelStartTimeDate);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(176, 138, 62, 26);
-		contentPanel.add(textField_1);
+		textFieldEndTime = new JTextField();
+		textFieldEndTime.setColumns(10);
+		textFieldEndTime.setBounds(176, 138, 62, 26);
+		contentPanel.add(textFieldEndTime);
 		
-		JLabel lblEndzeit = new JLabel("Endzeit");
-		lblEndzeit.setBounds(18, 143, 117, 16);
-		contentPanel.add(lblEndzeit);
+		JLabel labelEndTime = new JLabel("Endzeit");
+		labelEndTime.setBounds(18, 143, 117, 16);
+		contentPanel.add(labelEndTime);
 		
-		JLabel lblBezeichnung = new JLabel("Bezeichnung");
-		lblBezeichnung.setBounds(18, 171, 84, 16);
-		contentPanel.add(lblBezeichnung);
+		JLabel labelSubject = new JLabel("Bezeichnung");
+		labelSubject.setBounds(18, 171, 84, 16);
+		contentPanel.add(labelSubject);
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(176, 166, 217, 26);
-		contentPanel.add(textField_2);
+		textFieldSubject = new JTextField();
+		textFieldSubject.setColumns(10);
+		textFieldSubject.setBounds(176, 166, 217, 26);
+		contentPanel.add(textFieldSubject);
 	}
 }

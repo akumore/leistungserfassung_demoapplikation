@@ -123,20 +123,20 @@ public class projectView extends JDialog {
 		lblSuchfilter.setBounds(26, 259, 61, 16);
 		contentPanel.add(lblSuchfilter);
 		
-		JButton btnAuswahl = new JButton("Auswahl");
-		btnAuswahl.addActionListener(new ActionListener() {
+		JButton buttonChoose = new JButton("Auswahl");
+		buttonChoose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnAuswahl.setBounds(6, 294, 117, 29);
-		contentPanel.add(btnAuswahl);
+		buttonChoose.setBounds(6, 294, 117, 29);
+		contentPanel.add(buttonChoose);
 		
-		JButton buttonAbbrechen = new JButton("Abbrechen");
-		buttonAbbrechen.addActionListener(new ActionListener() {
+		JButton buttonCancel = new JButton("Abbrechen");
+		buttonCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		buttonAbbrechen.setBounds(289, 294, 117, 29);
-		contentPanel.add(buttonAbbrechen);
+		buttonCancel.setBounds(289, 294, 117, 29);
+		contentPanel.add(buttonCancel);
 	}
 }
