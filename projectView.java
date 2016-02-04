@@ -36,6 +36,9 @@ public class projectView extends JDialog {
 		this.restfunction = restfunction;
 		
 		
+		setResizable(false);		
+		setLocationRelativeTo(null);
+		
 		setModal(true);
 		setUndecorated(true);
 		setBounds(100, 100, 412, 329);
@@ -84,7 +87,7 @@ public class projectView extends JDialog {
 		tableProjects.setRowSorter(rowSorter);
 		
 		textFieldSearchFilter = new JTextField();
-		textFieldSearchFilter.setBounds(108, 253, 298, 26);
+		textFieldSearchFilter.setBounds(108, 253, 285, 26);
 		contentPanel.add(textFieldSearchFilter);
 		textFieldSearchFilter.setColumns(10);
 		
