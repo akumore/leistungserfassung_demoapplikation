@@ -50,7 +50,7 @@ public class projectView extends JDialog {
 		contentPanel.add(labelDialogTitle);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(16, 61, 390, 186);
+		scrollPane.setBounds(16, 61, 376, 186);
 		contentPanel.add(scrollPane);
 		
 		tableProjects = new JTable();
