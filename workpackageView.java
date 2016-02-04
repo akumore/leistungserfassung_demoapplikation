@@ -40,7 +40,7 @@ public class workpackageView extends JDialog {
 		setLocationRelativeTo(null);
 
 		setUndecorated(true);
-		setBounds(100, 100, 412, 329);
+		setBounds(100, 100, 379, 329);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -85,7 +85,7 @@ public class workpackageView extends JDialog {
 		tableProjects.setRowSorter(rowSorter);
 		
 		textFieldSearchFilter = new JTextField();
-		textFieldSearchFilter.setBounds(108, 253, 298, 26);
+		textFieldSearchFilter.setBounds(108, 253, 252, 26);
 		contentPanel.add(textFieldSearchFilter);
 		textFieldSearchFilter.setColumns(10);
 		
@@ -129,12 +129,12 @@ public class workpackageView extends JDialog {
 		btnAuswahl.setBounds(6, 294, 117, 29);
 		contentPanel.add(btnAuswahl);
 		
-		JButton button = new JButton("Auswahl");
-		button.addActionListener(new ActionListener() {
+		JButton buttonAbbrechen = new JButton("Abbrechen");
+		buttonAbbrechen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		button.setBounds(289, 294, 117, 29);
-		contentPanel.add(button);
+		buttonAbbrechen.setBounds(247, 290, 117, 29);
+		contentPanel.add(buttonAbbrechen);
 	}
 }
