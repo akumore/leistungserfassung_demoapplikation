@@ -94,8 +94,8 @@ public class Rest {
         } catch (IOException ioException) {
             System.out.println(ioException.getMessage());
         }
-
-        // verify response is HTTP OK
+        
+        // Überprüfen ob das Request erfolgreich war
         final int statusCode = response.getStatusLine().getStatusCode();
         if (statusCode != HttpStatus.SC_OK) {
             System.out.println("Error authenticating to Force.com: "+statusCode);
@@ -123,7 +123,7 @@ public class Rest {
         }
 
         baseUri = loginInstanceUrl + REST_ENDPOINT + API_VERSION ;
-        oauthHeader = new BasicHeader("Authorization", "OAuth " + loginAccessToken) ;
+        oauthHeader = new BasicHeader("Authorization", "OAuth " + loginAccessToken);
         System.out.println("oauthHeader1: " + oauthHeader);
         System.out.println("\n" + response.getStatusLine());
         System.out.println("Successful login");
@@ -134,6 +134,65 @@ public class Rest {
         //release connection
         httpPost.releaseConnection();
     }
+
+    public void queryUsername() {
+        System.out.println("\n_______________ UserName QUERY _______________");
+        try {
+          HttpClient httpClient = HttpClientBuilder.create().build();
+          
+          String username = "'" + benutzer.getUsername() + "'";
+          
+              String uri = baseUri + "/query?q=SELECT+Id,+Name,+Username+FROM+User+WHERE+Username=" + username;
+
+          System.out.println("Query URL: " + uri);
+              HttpGet httpGet = new HttpGet(uri);
+              System.out.println("oauthHeader2: " + oauthHeader);
+              httpGet.addHeader(oauthHeader);
+              httpGet.addHeader(prettyPrintHeader);
+              
+              HttpResponse response = httpClient.execute(httpGet);
+              int statusCode = response.getStatusLine().getStatusCode();
+              if (statusCode == 200) {
+                  String response_string = EntityUtils.toString(response.getEntity());
+                  try {
+                      JSONObject json = new JSONObject(response_string);
+                      System.out.println("JSON result of Query:\n" + json.toString(1));
+                      JSONArray j = json.getJSONArray("records");
+                      for (int i = 0; i < j.length(); i++) {
+                        benutzer.setUserId(json.getJSONArray("records").getJSONObject(i).getString("Id"));
+                        String LOL = json.getJSONArray("records").getJSONObject(i).getString("Name");
+                        System.out.println("ID des Benutzers gesetzt : " + benutzer.getUserId());
+                        System.out.println(LOL);
+                      }
+                  } catch (JSONException je) {
+                      System.out.println(je.getMessage());
+                  }
+              } else {
+                  System.out.println("Query was unsuccessful. Status code returned is " + statusCode);
+                  System.out.println("An error has occured. Http status: " + response.getStatusLine().getStatusCode());
+                  System.out.println(getBody(response.getEntity().getContent()));
+                  System.exit(-1);
+              }
+          } catch (IOException | NullPointerException ioe) {
+              System.out.println(ioe.getMessage());
+          }
+      }
+
+    
+    private static String getBody(InputStream inputStream) {
+        String result = "";
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(inputStream))) {
+            String inputLine;
+            while ( (inputLine = in.readLine() ) != null ) {
+                result += inputLine;
+                result += "\n";
+            }
+        } catch (IOException ioe) {
+            System.out.println(ioe.getMessage());
+        }
+        return result;
+    }
+    
 }
     
  
