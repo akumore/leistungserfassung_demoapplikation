@@ -139,16 +139,6 @@ public class Rest {
         queryAccount();
         queryContact();
         
-        System.out.println("Benutzer: " + 
-        					benutzer.getUserId() + 
-        					" " + 
-        					benutzer.getUsername() +
-        					" " +
-        					benutzer.getAccountId() +
-        					" " +
-        					benutzer.getInternalContactId());
-        		
-        
         //release connection
         httpPost.releaseConnection();
         setAuthSuccess(true);
