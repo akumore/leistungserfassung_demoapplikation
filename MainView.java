@@ -23,6 +23,10 @@ import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 public class MainView extends JFrame {
 
@@ -239,7 +243,6 @@ public class MainView extends JFrame {
 				try {
 					openEntryView();
 				} catch (ParseException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
@@ -291,20 +294,22 @@ public class MainView extends JFrame {
 	                java.lang.String.class,
 	                java.lang.String.class,
 	                java.lang.String.class,
-	                java.lang.String.class
+	                java.lang.String.class,
+	                java.lang.String.class,
+	                java.lang.String.class,
 	            };
 	            boolean[] canEdit = new boolean [] {
-	                false,
-	                false,
-	                false,
-	                false,
-	                false,
-	                false,
-	                false,
-	                false,
-	                false,
-	                false,
-	                false
+		                false,
+		                false,
+		                false,
+		                false,
+		                false,
+		                false,
+		                false,
+		                false,
+		                false,
+		                false,
+		                false
 	            };
 
 	            public Class<?> getColumnClass(int columnIndex) {
@@ -318,15 +323,23 @@ public class MainView extends JFrame {
 		scrollPane_1.setViewportView(tableWeekEntry);
 		
 		
-		restfunction.queryTracks();
+		
+		restfunction.queryDayTracks();
 		updateTable(tableTodayEntry);
+	
+		try {
+			restfunction.queryWeekTracks();
+			updateTable(tableWeekEntry);
+		} catch (ParseException e1) {
+
+			e1.printStackTrace();
+		}
 	}
 	
 	
 	private void loginSequence() {
 		loginVw.setVisible(true);
 		if(!restfunction.isAuthSuccess()) {
-			JOptionPane.showMessageDialog(loginVw, "Invalid username or password", "Login", JOptionPane.ERROR_MESSAGE);
 			loginSequence();
 		}
 	}
@@ -356,7 +369,7 @@ public class MainView extends JFrame {
                 tModel.removeRow(i);
             }
         }
-        restfunction.getEntryList().stream().forEach((a) -> {
+        restfunction.getEntryDayList().stream().forEach((a) -> {
             tModel.addRow(new String[]{ a.getEntryId(), a.getEntryProjectId(), a.getEntryWorkPackageId(), a.getEntryProjectNr(), a.getEntryProjectName(), a.getEntryWorkPackageName(), a.getEntrySubject(), a.getEntryDate(), a.getEntryStartTime(), a.getEntryEndTime(), a.getEntryHours()});
         });
         table.setModel(tModel);
@@ -396,8 +409,10 @@ public class MainView extends JFrame {
     	entryVw.setVisible(true);
     	
     	if(restfunction.hasCreatedEntry()) {
-    		restfunction.queryTracks();
+    		restfunction.queryDayTracks();
     		updateTable(tableTodayEntry);
+    		restfunction.queryWeekTracks();
+    		updateTable(tableWeekEntry);
     		restfunction.setCreatedEntry(false);
     	}
     }
