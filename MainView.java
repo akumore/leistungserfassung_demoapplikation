@@ -111,7 +111,7 @@ public class MainView extends JFrame {
 		panelTagesAnsicht.add(panelProjectBox);
 		panelProjectBox.setLayout(null);
 		
-		labelProjectBoxDisplay = new JLabel("N/A");
+		labelProjectBoxDisplay = new JLabel("Bitte auswählen");
 		labelProjectBoxDisplay.setFont(new Font("Lucida Grande", Font.PLAIN, 11));
 		labelProjectBoxDisplay.setBounds(6, 6, 207, 22);
 		panelProjectBox.add(labelProjectBoxDisplay);
@@ -123,7 +123,7 @@ public class MainView extends JFrame {
 		panelWorkpackgeBox.setBounds(307, 23, 219, 34);
 		panelTagesAnsicht.add(panelWorkpackgeBox);
 		
-		JLabel labelWorkpackageBoxDisplay = new JLabel("N/A");
+		JLabel labelWorkpackageBoxDisplay = new JLabel("- Bitte auswählen -");
 		labelWorkpackageBoxDisplay.setHorizontalAlignment(SwingConstants.CENTER);
 		labelWorkpackageBoxDisplay.setFont(new Font("Lucida Grande", Font.PLAIN, 11));
 		labelWorkpackageBoxDisplay.setBounds(6, 6, 207, 22);
