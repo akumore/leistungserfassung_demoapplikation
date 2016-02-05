@@ -42,7 +42,19 @@ public class Entry {
 	public void setEntrySubject(String entrySubject) { this.entrySubject = entrySubject; }
 	public void setEntryWorkPackageId(String entryWorkPackageId) { this.entryWorkPackageId = entryWorkPackageId; }
 	public void setEntryWorkPackageName(String entryWorkPackageName) { this.entryWorkPackageName = entryWorkPackageName; }
-	public void setEntryStartTime(String entryStartTime) { this.entryStartTime = entryStartTime; }
+	
+	public void setEntryStartTime(String entryStartTime) throws ParseException {
+		String formattedTime;
+		String oldFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'+'SSSS";
+		String newFormat = "HH:mm";
+		
+		SimpleDateFormat sdf = new SimpleDateFormat(oldFormat);
+		Date d = sdf.parse(entryStartTime);
+		
+		sdf.applyPattern(newFormat);
+		formattedTime = sdf.format(d);
+		this.entryStartTime = formattedTime;
+	}
 	
 	public void setEntryDate(String entryDate) throws ParseException { 
 		
@@ -59,23 +71,24 @@ public class Entry {
 	public void setEntryEndTime(String entryEndTime) throws ParseException { 
 		
 		String formattedTime;
+		String oldFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'+'SSSS";
+		String newFormat = "HH:mm";
 		
-		String oldFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'+'XXX";
-		String newFormat = "h:mm a";
 		SimpleDateFormat sdf = new SimpleDateFormat(oldFormat);
 		Date d = sdf.parse(entryEndTime);
+		
 		sdf.applyPattern(newFormat);
 		formattedTime = sdf.format(d);
 		this.entryEndTime = formattedTime;
-		
 	}
 	
 	
 	
-	public void setEntryHours(int entryHours) {
-		String hoursInString = Integer.toString(entryHours);
-		this.entryHours = hoursInString;
+	public void setEntryHours(double entryHours) {
+		this.entryHours = String.valueOf(entryHours);
 	}	
+	
 	public void setEntryRecordTypeId(String entryRecordTypeId) { this.entryRecordTypeId = entryRecordTypeId; }
+	
 	public void setEntryRecordTypeName(String entryRecordTypeName) { this.entryRecordTypeName = entryRecordTypeName; }	
 }

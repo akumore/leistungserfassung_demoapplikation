@@ -291,7 +291,7 @@ public class Rest {
             		+ "+Date__c,"
             		+ "+End_Time_h__c,"
             		+ "+Start_Time_h__c,"
-            		+ "+Hours_manuel__c"
+            		+ "+Hours_calc__c"
             		+ "+FROM"
             		+ "+Time_Tracking__c"
             		+ "+WHERE"
@@ -326,7 +326,7 @@ public class Rest {
                       ey.setEntryDate(json.getJSONArray("records").getJSONObject(i).getString("Date__c"));
                       ey.setEntryStartTime(json.getJSONArray("records").getJSONObject(i).getString("Start_Time_h__c"));
                       ey.setEntryEndTime(json.getJSONArray("records").getJSONObject(i).getString("End_Time_h__c"));
-                      ey.setEntryHours(json.getJSONArray("records").getJSONObject(i).getInt("Hours_manuel__c"));
+                      ey.setEntryHours(json.getJSONArray("records").getJSONObject(i).getDouble("Hours_calc__c"));
                       entries.add(ey);
                     }
                 } catch (JSONException je) {
