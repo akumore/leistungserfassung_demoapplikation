@@ -37,7 +37,6 @@ public class workpackageView extends JDialog {
 		this.restfunction = restfunction;
 		this.restfunction.queryWorkPackages();
 		
-		this.restfunction = restfunction;
 		setResizable(false);
 		setModal(true);
 		
