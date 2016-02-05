@@ -134,7 +134,7 @@ public class projectView extends JDialog {
 		buttonChoose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(!isRowSelected()) { return; }
-				choseProject();
+				chooseProject();
 				dispose();
 			}
 		});
@@ -154,7 +154,7 @@ public class projectView extends JDialog {
 		
 	}
 	
-	private void choseProject() {
+	private void chooseProject() {
 		
     	String selectedObjectId = castTableValues(0);
     	String selectedObjectNr = castTableValues(1);
