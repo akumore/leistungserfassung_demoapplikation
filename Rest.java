@@ -7,6 +7,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.swing.JOptionPane;
+
 import org.apache.http.Header;
 
 import org.apache.http.client.methods.HttpPost;
@@ -52,6 +55,8 @@ public class Rest {
     
     private boolean projectChosen;
     private boolean workpackageChosen;
+    private boolean createdEntry;
+    private boolean insertError;
     
 
 	public Rest() {
@@ -79,6 +84,10 @@ public class Rest {
     
     public boolean isWorkpackageChosen() { return workpackageChosen; }
     
+    public boolean hasCreatedEntry() { return createdEntry; }
+    
+    public boolean getInsertError() { return insertError; }
+    
     // Setters
     public void setUser(User benutzer) { this.benutzer = benutzer; }
     
@@ -91,6 +100,10 @@ public class Rest {
     public void setProjectChosen(boolean b) { this.projectChosen = b; }
     
     public void setWorkpackageChosen(boolean b) { this.workpackageChosen = b; }
+    
+    public void setCreatedEntry(boolean b) { this.createdEntry = b; }
+    
+    public void setInsertError(boolean b) { this.insertError = b; }
     
     ///////////////////////////
 
@@ -407,7 +420,6 @@ public class Rest {
           }
       }
     
-
     public void queryWorkPackages() {
         System.out.println("\n_______________ Workpackage QUERY _______________");
         try {
@@ -462,6 +474,67 @@ public class Rest {
               System.out.println(ioe.getMessage());
           }
       }
+    
+
+    public void createEntry(String subject, String date, String startTime, String endTime) {
+        System.out.println("\n_______________ Time-Entry-Card INSERT _______________");
+        
+        String uri = baseUri + "/sobjects/Time_Tracking__c/";
+        try {
+
+        	
+        	
+        	
+            JSONObject tt = new JSONObject(); //DATE FORMAT " 2016-02-05" // TIME FORMAT ""2016-01-28T09:28:00.000+0000""
+       
+            tt.put("RecordTypeId", chosenProject.getProjectRecordTypeId());
+            tt.put("Subject__c", subject);
+            tt.put("Project__c", getChosenProject().getProjectId());
+            tt.put("Work_Package__c", getChosenWorkPackage().getWorkPackageId());
+            tt.put("Date__c", date);
+            tt.put("Start_Time_h__c", startTime);
+            tt.put("End_Time_h__c", endTime);
+            tt.put("Internal_Contact__c", benutzer.getInternalContactId());
+            tt.put("Status__c", "Submitted by Employee");
+            
+            System.out.println("JSON for car record to be inserted:\n" + tt.toString(1));
+
+            //Construct the objects needed for the request
+            HttpClient httpClient = HttpClientBuilder.create().build();
+
+            HttpPost httpPost = new HttpPost(uri);
+            httpPost.addHeader(oauthHeader);
+            httpPost.addHeader(prettyPrintHeader);
+            // The message we are going to post
+            StringEntity body = new StringEntity(tt.toString(1));
+            body.setContentType("application/json");
+            httpPost.setEntity(body);
+          
+              
+            //Make the request
+            HttpResponse response = httpClient.execute(httpPost);
+
+            //Process the results
+            int statusCode = response.getStatusLine().getStatusCode();
+            
+            String response_string = EntityUtils.toString(response.getEntity());
+            JSONObject json = new JSONObject(response_string);
+            
+            if (statusCode == 201) {
+                // Store the retrieved lead id to use when we update the lead.
+                String ttId = json.getString("id");
+                System.out.println("New TT id from response: " + ttId);
+            } else {
+            	setInsertError(true);
+                System.out.println("Insertion unsuccessful. Status code returned is " + statusCode);
+            }
+        } catch (JSONException e) {
+            System.out.println("Issue creating JSON or processing results");
+            System.out.println(e.toString());
+        } catch (IOException | NullPointerException ioe) {
+            System.out.println(ioe.getMessage());
+        }
+    }
     
     
     private static String getBody(InputStream inputStream) {
