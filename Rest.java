@@ -90,7 +90,7 @@ public class Rest {
     
     public void setProjectChosen(boolean b) { this.projectChosen = b; }
     
-    public void setWorkpacakgeChosen(boolean b) { this.workpackageChosen = b; }
+    public void setWorkpackageChosen(boolean b) { this.workpackageChosen = b; }
     
     ///////////////////////////
 
