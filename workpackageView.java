@@ -89,9 +89,9 @@ public class workpackageView extends JDialog {
 	        });
 		
 		TableColumnModel columnModel = tablePackages.getColumnModel();
-		columnModel.getColumn(0).setPreferredWidth(10);
-		columnModel.getColumn(1).setPreferredWidth(30);
-		columnModel.getColumn(2).setPreferredWidth(150);
+		columnModel.getColumn(0).setPreferredWidth(5);
+		columnModel.getColumn(1).setPreferredWidth(100);
+		columnModel.getColumn(2).setPreferredWidth(30);
 		
 		TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(tablePackages.getModel());
 		tablePackages.setRowSorter(rowSorter);
