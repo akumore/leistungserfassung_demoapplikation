@@ -50,11 +50,15 @@ public class Rest {
     
     private boolean authSuccessful = false;
     
-    private boolean projectChosen = false;
+    private boolean projectChosen;
+    private boolean workpackageChosen;
     
 
 	public Rest() {
 		benutzer = new User();
+		
+		projectChosen = false;
+		workpackageChosen = false;
 	}
 	
 	
@@ -73,6 +77,8 @@ public class Rest {
     
     public boolean isProjectChosen() { return projectChosen; }
     
+    public boolean isWorkpackageChosen() { return workpackageChosen; }
+    
     // Setters
     public void setUser(User benutzer) { this.benutzer = benutzer; }
     
@@ -83,6 +89,8 @@ public class Rest {
     public void setAuthSuccess(boolean b) { this.authSuccessful = b; }
     
     public void setProjectChosen(boolean b) { this.projectChosen = b; }
+    
+    public void setWorkpacakgeChosen(boolean b) { this.workpackageChosen = b; }
     
     ///////////////////////////
 
@@ -274,7 +282,6 @@ public class Rest {
           }
       }
 
-    
     public void queryTracks() throws ParseException {
         System.out.println("\n_______________ Tracks QUERY _______________");
         try {
@@ -348,7 +355,6 @@ public class Rest {
             System.out.println(ioe.getMessage());
         }
     }
-
     
     public void queryProjects() {
         System.out.println("\n_______________ Project QUERY _______________");
@@ -386,6 +392,62 @@ public class Rest {
                         pr.setProjectName(json.getJSONArray("records").getJSONObject(i).getString("Name"));
                         pr.setProjectNr(json.getJSONArray("records").getJSONObject(i).getString("Project_Number__c"));
                         projects.add(pr);
+                      }
+                  } catch (JSONException je) {
+                      System.out.println(je.getMessage());
+                  }
+              } else {
+                  System.out.println("Query was unsuccessful. Status code returned is " + statusCode);
+                  System.out.println("An error has occured. Http status: " + response.getStatusLine().getStatusCode());
+                  System.out.println(getBody(response.getEntity().getContent()));
+                  System.exit(-1);
+              }
+          } catch (IOException | NullPointerException ioe) {
+              System.out.println(ioe.getMessage());
+          }
+      }
+    
+
+    public void queryWorkPackages() {
+        System.out.println("\n_______________ Workpackage QUERY _______________");
+        try {
+          HttpClient httpClient = HttpClientBuilder.create().build();
+          String projectID = "'" + chosenProject.getProjectId() + "'";
+          
+          String uri = baseUri + "/query?q="
+          						+ "SELECT"
+          						+ "+Id,"
+          						+ "+Name,"
+          						+ "+Status__c"
+          						+ "+FROM"
+          						+ "+Work_Package__c"
+          						+ "+WHERE"
+          						+ "+Project__r.Id=" + projectID;
+          
+              System.out.println("Query URL: " + uri);
+              HttpGet httpGet = new HttpGet(uri);
+              System.out.println("oauthHeader2: " + oauthHeader);
+              httpGet.addHeader(oauthHeader);
+              httpGet.addHeader(prettyPrintHeader);
+              
+              HttpResponse response = httpClient.execute(httpGet);
+              int statusCode = response.getStatusLine().getStatusCode();
+              if (statusCode == 200) {
+                  String response_string = EntityUtils.toString(response.getEntity());
+                  try {
+                    packages = new ArrayList<WorkPackage>();
+                      JSONObject json = new JSONObject(response_string);
+                      System.out.println("JSON result of Query:\n" + json.toString(1));
+                      JSONArray j = json.getJSONArray("records");
+                      for (int i = 0; i < j.length(); i++) {
+                        
+                        WorkPackage wp = new WorkPackage();
+                        wp.setWorkPackageId(json.getJSONArray("records").getJSONObject(i).getString("Id"));
+                        wp.setWorkPackageName(json.getJSONArray("records").getJSONObject(i).getString("Name"));
+                        wp.setWorkPackageStatus(json.getJSONArray("records").getJSONObject(i).getString("Status__c"));
+                        System.out.println("Workpackage record is: " + i + ". " + wp.getWorkPackageId() + " " + wp.getWorkPackageName() + " " + wp.getWorkPackageStatus());
+                        packages.add(wp);
+                        chosenProject.setWorkPackageList(packages);
                       }
                   } catch (JSONException je) {
                       System.out.println(je.getMessage());
