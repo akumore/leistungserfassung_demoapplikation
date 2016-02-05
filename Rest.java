@@ -2,7 +2,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.apache.http.Header;
 
@@ -75,6 +78,8 @@ public class Rest {
     
     public void setAuthSuccess(boolean b) { this.authSuccess = b; }
     
+    ///////////////////////////
+
     public void setupRest() {
     	
     	// Login-URL zusammensetzen
@@ -262,6 +267,84 @@ public class Rest {
               System.out.println(ioe.getMessage());
           }
       }
+
+    
+    public void queryTracks() throws ParseException {
+        System.out.println("\n_______________ Tracks QUERY _______________");
+        try {
+
+        	SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd");
+        	Date now = new Date();
+            String strDate = sdfDate.format(now);
+        	
+            //Set up the HTTP objects needed to make the request.
+            HttpClient httpClient = HttpClientBuilder.create().build();
+
+            String uri = baseUri + "/query?q=SELECT"
+            		+ "+Id,"
+            		+ "+Subject__c,"
+            		+ "+Project__c,"
+            		+ "+Project__r.Project_Number__c,"
+            		+ "+Project__r.Name,"
+            		+ "+Work_Package__r.Name,"
+            		+ "+Work_Package__c,"
+            		+ "+Date__c,"
+            		+ "+End_Time_h__c,"
+            		+ "+Start_Time_h__c,"
+            		+ "+Hours_manuel__c"
+            		+ "+FROM"
+            		+ "+Time_Tracking__c"
+            		+ "+WHERE"
+            		+ "+Date__c=" + strDate;
+            System.out.println("Query URL: " + uri);
+            HttpGet httpGet = new HttpGet(uri);
+            System.out.println("oauthHeader2: " + oauthHeader);
+            httpGet.addHeader(oauthHeader);
+            httpGet.addHeader(prettyPrintHeader);
+
+            // Make the request.
+            HttpResponse response = httpClient.execute(httpGet);
+
+            // Process the result
+            int statusCode = response.getStatusLine().getStatusCode();
+            if (statusCode == 200) {
+                String response_string = EntityUtils.toString(response.getEntity());
+                try {
+                  this.entries = new ArrayList<>();
+                    JSONObject json = new JSONObject(response_string);
+                    System.out.println("JSON result of Query:\n" + json.toString(1));
+                    JSONArray j = json.getJSONArray("records");
+                    for (int i = 0; i < j.length(); i++){
+                      Entry ey = new Entry();
+                      ey.setEntryId(json.getJSONArray("records").getJSONObject(i).getString("Id"));
+                      ey.setEntrySubject(json.getJSONArray("records").getJSONObject(i).getString("Subject__c"));
+                      ey.setEntryProjectId(json.getJSONArray("records").getJSONObject(i).getString("Project__c"));
+                      ey.setEntryProjectName(json.getJSONArray("records").getJSONObject(i).getJSONObject("Project__r").getString("Name"));
+                      ey.setEntryProjectNr(json.getJSONArray("records").getJSONObject(i).getJSONObject("Project__r").getString("Project_Number__c"));
+                      ey.setEntryWorkPackageName(json.getJSONArray("records").getJSONObject(i).getJSONObject("Work_Package__r").getString("Name"));
+                      ey.setEntryWorkPackageId(json.getJSONArray("records").getJSONObject(i).getString("Work_Package__c"));
+                      ey.setEntryDate(json.getJSONArray("records").getJSONObject(i).getString("Date__c"));
+                      ey.setEntryStartTime(json.getJSONArray("records").getJSONObject(i).getString("Start_Time_h__c"));
+                      ey.setEntryEndTime(json.getJSONArray("records").getJSONObject(i).getString("End_Time_h__c"));
+                      ey.setEntryHours(json.getJSONArray("records").getJSONObject(i).getInt("Hours_manuel__c"));
+                      entries.add(ey);
+                    }
+                } catch (JSONException je) {
+                    System.out.println(je.getMessage());
+                }
+            } else {
+                System.out.println("Query was unsuccessful. Status code returned is " + statusCode);
+                System.out.println("An error has occured. Http status: " + response.getStatusLine().getStatusCode());
+                System.out.println(getBody(response.getEntity().getContent()));
+                System.exit(-1);
+            }
+        } catch (IOException | NullPointerException ioe) {
+            System.out.println(ioe.getMessage());
+        }
+    }
+    
+    
+    
     
     private static String getBody(InputStream inputStream) {
         String result = "";

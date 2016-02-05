@@ -1,11 +1,18 @@
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Entry {
 
 	private String entryId;
 	private String entryRecordTypeId;
 	private String entryRecordTypeName;
 	private String entrySubject;
-	private String entryProject;
-	private String entryWorkPackage;
+	private String entryProjectId;
+	private String entryProjectName;
+	private String entryProjectNr;
+	private String entryWorkPackageId;
+	private String entryWorkPackageName;
 	private String entryDate;
 	private String entryStartTime;
 	private String entryEndTime;
@@ -14,9 +21,12 @@ public class Entry {
 
 	// Getter
 	public String getEntryId() { return entryId; }
-	public String getEntryProject() { return entryProject; }
+	public String getEntryProjectId() { return entryProjectId; }
+	public String getEntryProjectName() { return entryProjectName; }
+	public String getEntryProjectNr() { return entryProjectNr; }
 	public String getEntrySubject() { return entrySubject; }
-	public String getEntryWorkPackage() { return entryWorkPackage; }
+	public String getEntryWorkPackageId() { return entryWorkPackageId; }
+	public String getEntryWorkPackageName() { return entryWorkPackageName; }
 	public String getEntryStartTime() { return entryStartTime; }
 	public String getEntryDate() { return entryDate; }
 	public String getEntryEndTime() { return entryEndTime; }
@@ -26,12 +36,42 @@ public class Entry {
 	
 	// Setter
 	public void setEntryId(String entryId) { this.entryId = entryId; }
-	public void setEntryProject(String entryProject) { this.entryProject = entryProject; }
+	public void setEntryProjectId(String entryProjectId) { this.entryProjectId = entryProjectId; }
+	public void setEntryProjectName(String entryProjectName) { this.entryProjectName = entryProjectName; }
+	public void setEntryProjectNr(String entryProjectNr) { this.entryProjectNr = entryProjectNr; }
 	public void setEntrySubject(String entrySubject) { this.entrySubject = entrySubject; }
-	public void setEntryWorkPackage(String entryWorkPackage) { this.entryWorkPackage = entryWorkPackage; }
+	public void setEntryWorkPackageId(String entryWorkPackageId) { this.entryWorkPackageId = entryWorkPackageId; }
+	public void setEntryWorkPackageName(String entryWorkPackageName) { this.entryWorkPackageName = entryWorkPackageName; }
 	public void setEntryStartTime(String entryStartTime) { this.entryStartTime = entryStartTime; }
-	public void setEntryDate(String entryDate) { this.entryDate = entryDate; }
-	public void setEntryEndTime(String entryEndTime) { this.entryEndTime = entryEndTime; }
+	
+	public void setEntryDate(String entryDate) throws ParseException { 
+		
+		String formattedTime;
+		String oldFormat = "yyyy-MM-dd";
+		String newFormat = "dd.MM.yyyy";
+		SimpleDateFormat sdf = new SimpleDateFormat(oldFormat);
+		Date d = sdf.parse(entryDate);
+		sdf.applyPattern(newFormat);
+		formattedTime = sdf.format(d);
+		this.entryDate = formattedTime;
+	}
+	
+	public void setEntryEndTime(String entryEndTime) throws ParseException { 
+		
+		String formattedTime;
+		
+		String oldFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'+'XXX";
+		String newFormat = "h:mm a";
+		SimpleDateFormat sdf = new SimpleDateFormat(oldFormat);
+		Date d = sdf.parse(entryEndTime);
+		sdf.applyPattern(newFormat);
+		formattedTime = sdf.format(d);
+		this.entryEndTime = formattedTime;
+		
+	}
+	
+	
+	
 	public void setEntryHours(int entryHours) {
 		String hoursInString = Integer.toString(entryHours);
 		this.entryHours = hoursInString;
