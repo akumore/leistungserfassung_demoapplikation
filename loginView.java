@@ -21,8 +21,6 @@ public class loginView extends JDialog {
 	private JTextField textFieldEmail;
 	private JPasswordField textFieldPassword;
 
-
-
 	public loginView(Rest restfunction) {
 		
 		setResizable(false);
