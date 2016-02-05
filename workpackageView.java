@@ -1,6 +1,4 @@
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -8,6 +6,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.JLabel;
@@ -24,14 +23,19 @@ import java.awt.event.ActionEvent;
 
 public class workpackageView extends JDialog {
 
+
+	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
-	private JTable tableProjects;
+	private JTable tablePackages;
 	private JTextField textFieldSearchFilter;
 	private Rest restfunction;
 	DefaultTableModel tModel;
 	
 
 	public workpackageView(Rest restfunction) {
+		
+		this.restfunction = restfunction;
+		this.restfunction.queryWorkPackages();
 		
 		this.restfunction = restfunction;
 		setResizable(false);
@@ -55,23 +59,25 @@ public class workpackageView extends JDialog {
 		scrollPane.setBounds(16, 61, 345, 186);
 		contentPanel.add(scrollPane);
 		
-		tableProjects = new JTable();
-		scrollPane.setViewportView(tableProjects);
-		tableProjects.setModel(new javax.swing.table.DefaultTableModel(
+		tablePackages = new JTable();
+		scrollPane.setViewportView(tablePackages);
+		tablePackages.setModel(new javax.swing.table.DefaultTableModel(
 	            new Object [][] {
 
 	            },
 	            new String [] {
-	                "Workpackage-ID", "Bezeichnung"
+	                "ID", "Bezeichnung", "Status"
 	            }
 	        ) {
 				private static final long serialVersionUID = -5060001140943749394L;
 				@SuppressWarnings("rawtypes")
 				Class[] types = new Class [] {
-	                java.lang.String.class, java.lang.String.class
+	                java.lang.String.class,
+	                java.lang.String.class,
+	                java.lang.String.class
 	            };
 	            boolean[] canEdit = new boolean [] {
-	                false, false
+	                false, false, false
 	            };
 	            public Class<?> getColumnClass(int columnIndex) {
 	                return types [columnIndex];
@@ -81,8 +87,14 @@ public class workpackageView extends JDialog {
 	                return canEdit [columnIndex];
 	            }
 	        });
-		TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(tableProjects.getModel());
-		tableProjects.setRowSorter(rowSorter);
+		
+		TableColumnModel columnModel = tablePackages.getColumnModel();
+		columnModel.getColumn(0).setPreferredWidth(5);
+		columnModel.getColumn(1).setPreferredWidth(100);
+		columnModel.getColumn(2).setPreferredWidth(30);
+		
+		TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(tablePackages.getModel());
+		tablePackages.setRowSorter(rowSorter);
 		
 		textFieldSearchFilter = new JTextField();
 		textFieldSearchFilter.setBounds(108, 253, 252, 26);
@@ -124,6 +136,9 @@ public class workpackageView extends JDialog {
 		JButton buttonChoose = new JButton("Auswahl");
 		buttonChoose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(!isRowSelected()) { return; }
+				chooseWorkpackage();
+				dispose();
 			}
 		});
 		buttonChoose.setBounds(6, 294, 117, 29);
@@ -132,9 +147,52 @@ public class workpackageView extends JDialog {
 		JButton buttonCancel = new JButton("Abbrechen");
 		buttonCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				dispose();
 			}
 		});
 		buttonCancel.setBounds(247, 290, 117, 29);
 		contentPanel.add(buttonCancel);
+		loadTableContent();
 	}
+	
+	private void chooseWorkpackage() {	
+    	String selectedObjectId = castTableValues(0);
+        String selectedObjectName = castTableValues(1);
+        String selectedObjectStatus = castTableValues(2);
+        
+		WorkPackage wp = new WorkPackage();
+		wp.setWorkPackageId(selectedObjectId);
+		wp.setWorkPackageName(selectedObjectName);
+		wp.setWorkPackageStatus(selectedObjectStatus);
+		
+		restfunction.setChosenWorkPackage(wp);
+		restfunction.setWorkpackageChosen(true);
+	}
+	
+    private boolean isRowSelected() {
+        boolean isSelected = false;
+        if(tablePackages.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(workpackageView.this, "Bitte wählen Sie einen Datensatz von der Tabelle!", "Fehler", JOptionPane.ERROR_MESSAGE);
+        } else {
+            isSelected = true;
+        }
+        return isSelected;
+    }
+	
+    private void loadTableContent() {
+        tModel = (DefaultTableModel)tablePackages.getModel();
+        restfunction.getChosenProject().getWorkPackageList().stream().forEach((a) -> {
+        	tModel.addRow(new String[]{ a.getWorkPackageId(), a.getWorkPackageName(), a.getWorkPackageStatus() });
+        });
+        tablePackages.setModel(tModel);
+    }
+
+    private String castTableValues(int i) {
+        return (String)tablePackages.getModel().getValueAt(getSelectedRow(), i);
+    }
+    
+    private int getSelectedRow() { 
+    	return tablePackages.getSelectedRow();
+    }
+	
 }

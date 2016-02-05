@@ -37,8 +37,10 @@ public class MainView extends JFrame {
 	
 	private JLabel labelUserEmail;
 	private JLabel labelProjectBoxDisplay;
+	private JLabel labelWorkpackageBoxDisplay;
 	
 	private JButton buttonChooseWorkpackage;
+	private JButton buttonCreateEntry;
 	
 	private Rest restfunction = new Rest();
 
@@ -123,7 +125,7 @@ public class MainView extends JFrame {
 		panelWorkpackgeBox.setBounds(307, 23, 219, 34);
 		panelTagesAnsicht.add(panelWorkpackgeBox);
 		
-		JLabel labelWorkpackageBoxDisplay = new JLabel("- Bitte auswählen -");
+		labelWorkpackageBoxDisplay = new JLabel("- Bitte auswählen -");
 		labelWorkpackageBoxDisplay.setHorizontalAlignment(SwingConstants.CENTER);
 		labelWorkpackageBoxDisplay.setFont(new Font("Lucida Grande", Font.PLAIN, 11));
 		labelWorkpackageBoxDisplay.setBounds(6, 6, 207, 22);
@@ -154,6 +156,7 @@ public class MainView extends JFrame {
 		buttonChooseWorkpackage.setEnabled(false);
 		buttonChooseWorkpackage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				openWorkpackageView();
 			}
 		});
 		buttonChooseWorkpackage.setBounds(1011, 83, 196, 45);
@@ -228,7 +231,7 @@ public class MainView extends JFrame {
 		panelTagesAnsicht.add(panel);
 		panel.setLayout(null);
 		
-		JButton buttonCreateEntry = new JButton("Erfassen");
+		buttonCreateEntry = new JButton("Erfassen");
 		buttonCreateEntry.setEnabled(false);
 		buttonCreateEntry.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -238,7 +241,6 @@ public class MainView extends JFrame {
 		panel.add(buttonCreateEntry);
 		
 		JButton buttonUpdateEntry = new JButton("Bearbeiten");
-		buttonUpdateEntry.setEnabled(false);
 		buttonUpdateEntry.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -247,7 +249,6 @@ public class MainView extends JFrame {
 		panel.add(buttonUpdateEntry);
 		
 		JButton buttonDeleteEntry = new JButton("Löschen");
-		buttonDeleteEntry.setEnabled(false);
 		buttonDeleteEntry.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -366,6 +367,20 @@ public class MainView extends JFrame {
     		labelProjectBoxDisplay.setText(chosenProject);
     		buttonChooseWorkpackage.setEnabled(true);
 	    }
+    }
+    
+    private void openWorkpackageView() {
+    	String chosenWorkPackage;
+    	
+    	workpackageView workpackageView = new workpackageView(restfunction);
+    	workpackageView.setLocationRelativeTo(null);
+    	workpackageView.setVisible(true);
+    	
+    	if(restfunction.isWorkpackageChosen()) {
+    		chosenWorkPackage = restfunction.getChosenWorkPackage().getWorkPackageName();
+    		labelWorkpackageBoxDisplay.setText(chosenWorkPackage);
+    		buttonCreateEntry.setEnabled(true);
+    	}
     }
 
 }
