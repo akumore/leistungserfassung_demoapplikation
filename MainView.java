@@ -9,7 +9,6 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import java.awt.Color;
@@ -237,7 +236,12 @@ public class MainView extends JFrame {
 		buttonCreateEntry.setEnabled(false);
 		buttonCreateEntry.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				openEntryView();
+				try {
+					openEntryView();
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		buttonCreateEntry.setBounds(6, 6, 184, 39);
@@ -386,9 +390,15 @@ public class MainView extends JFrame {
     	}
     }
     
-    private void openEntryView() {
+    private void openEntryView() throws ParseException {
     	entryInsertView entryVw = new entryInsertView(restfunction);
     	entryVw.setLocationRelativeTo(null);
     	entryVw.setVisible(true);
+    	
+    	if(restfunction.hasCreatedEntry()) {
+    		restfunction.queryTracks();
+    		updateTable(tableTodayEntry);
+    		restfunction.setCreatedEntry(false);
+    	}
     }
 }
