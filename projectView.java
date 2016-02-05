@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.JLabel;
@@ -83,6 +84,12 @@ public class projectView extends JDialog {
 	                return canEdit [columnIndex];
 	            }
 	        });
+		TableColumnModel columnModel = tableProjects.getColumnModel();
+		columnModel.getColumn(0).setPreferredWidth(10);
+		columnModel.getColumn(1).setPreferredWidth(30);
+		columnModel.getColumn(2).setPreferredWidth(150);
+		
+		
 		TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(tableProjects.getModel());
 		tableProjects.setRowSorter(rowSorter);
 		
@@ -114,7 +121,7 @@ public class projectView extends JDialog {
 	        }
 	        @Override
 	        public void changedUpdate(DocumentEvent e) {
-	            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	            throw new UnsupportedOperationException("Not supported yet.");
 	        }
 	    });
 
@@ -128,7 +135,6 @@ public class projectView extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				if(!isRowSelected()) { return; }
 				choseProject();
-				JOptionPane.showMessageDialog(projectView.this, "Projekt ausgewählt!", "Projektauswahl", JOptionPane.INFORMATION_MESSAGE);
 				dispose();
 			}
 		});
