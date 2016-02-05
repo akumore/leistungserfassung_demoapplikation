@@ -8,6 +8,10 @@ import javax.swing.JOptionPane;
 
 import java.awt.Font;
 import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
+
 import java.awt.Color;
 import javax.swing.SwingConstants;
 import javax.swing.JTabbedPane;
@@ -17,6 +21,7 @@ import javax.swing.JTable;
 import javax.swing.border.BevelBorder;
 import java.awt.SystemColor;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 
@@ -28,7 +33,9 @@ public class MainView extends JFrame {
 	private JTable tableTodayEntry;
 	private JTable tableWeekEntry;
 	private loginView loginVw;
+	private DefaultTableModel tModel;
 	
+	private JLabel labelUserEmail;
 	
 	private Rest restfunction = new Rest();
 
@@ -47,16 +54,15 @@ public class MainView extends JFrame {
 	}
 
 
-	public MainView() {
+	public MainView() throws ParseException {
 		
 		loginVw = new loginView(restfunction);
 		loginVw.setLocationRelativeTo(null);
 		loginSequence();
 		
-		
 		setTitle("Brand Leadership Circle - Time Tracking");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1040, 503);
+		setBounds(100, 100, 1246, 606);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -69,7 +75,7 @@ public class MainView extends JFrame {
 		
 		JPanel panelUserInformation = new JPanel();
 		panelUserInformation.setBorder(new LineBorder(new Color(0, 0, 0), 2));
-		panelUserInformation.setBounds(696, 6, 326, 99);
+		panelUserInformation.setBounds(914, 6, 326, 99);
 		contentPane.add(panelUserInformation);
 		panelUserInformation.setLayout(null);
 		
@@ -83,13 +89,13 @@ public class MainView extends JFrame {
 		labelLoggedInAs.setBounds(97, 16, 223, 16);
 		panelUserInformation.add(labelLoggedInAs);
 		
-		JLabel labelUserEmail = new JLabel("N/A");
+		labelUserEmail = new JLabel(restfunction.getUser().getUsername());
 		labelUserEmail.setHorizontalAlignment(SwingConstants.CENTER);
-		labelUserEmail.setBounds(97, 41, 223, 16);
+		labelUserEmail.setBounds(97, 53, 223, 16);
 		panelUserInformation.add(labelUserEmail);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(6, 106, 1028, 369);
+		tabbedPane.setBounds(6, 106, 1234, 472);
 		contentPane.add(tabbedPane);
 		
 		JPanel panelTagesAnsicht = new JPanel();
@@ -137,7 +143,7 @@ public class MainView extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		buttonChooseProject.setBounds(805, 12, 196, 45);
+		buttonChooseProject.setBounds(1011, 26, 196, 45);
 		panelTagesAnsicht.add(buttonChooseProject);
 		
 		JButton buttonChooseWorkpackage = new JButton("Workpackage Auswählen");
@@ -146,11 +152,11 @@ public class MainView extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		buttonChooseWorkpackage.setBounds(805, 69, 196, 45);
+		buttonChooseWorkpackage.setBounds(1011, 83, 196, 45);
 		panelTagesAnsicht.add(buttonChooseWorkpackage);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(6, 61, 786, 256);
+		scrollPane.setBounds(6, 61, 993, 359);
 		panelTagesAnsicht.add(scrollPane);
 		
 		tableTodayEntry = new JTable();
@@ -159,7 +165,7 @@ public class MainView extends JFrame {
 
 	            },
 	            new String [] {
-	                "Entry ID", "Entry Subject", "Projekt ID", "Workpackage", "Datum", "Startzeit", "Endzeit", "Stunden"
+	            		"T-ID", "P-ID","WP-ID", "P-Nr","Projekt Name", "Workpackage Name", "Bezeichnung", "Datum", "Startzeit", "Endzeit", "Stunden"
 	            }
 	        ) {
 				private static final long serialVersionUID = -5060001140943749394L;
@@ -172,9 +178,15 @@ public class MainView extends JFrame {
 	                java.lang.String.class,
 	                java.lang.String.class,
 	                java.lang.String.class,
-	                java.lang.String.class
+	                java.lang.String.class,
+	                java.lang.String.class,
+	                java.lang.String.class,
+	                java.lang.String.class,
 	            };
 	            boolean[] canEdit = new boolean [] {
+	                false,
+	                false,
+	                false,
 	                false,
 	                false,
 	                false,
@@ -193,12 +205,22 @@ public class MainView extends JFrame {
 	                return canEdit [columnIndex];
 	            }
 	        });		
+		
+		TableColumnModel columnModel = tableTodayEntry.getColumnModel();
+		columnModel.getColumn(0).setPreferredWidth(10);
+		columnModel.getColumn(1).setPreferredWidth(10);
+		columnModel.getColumn(2).setPreferredWidth(10);
+		columnModel.getColumn(3).setPreferredWidth(15);
+		columnModel.getColumn(4).setPreferredWidth(150);
+		columnModel.getColumn(5).setPreferredWidth(150);
+		columnModel.getColumn(6).setPreferredWidth(150);
+		
 		scrollPane.setViewportView(tableTodayEntry);
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(SystemColor.window);
 		panel.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
-		panel.setBounds(805, 152, 196, 152);
+		panel.setBounds(1011, 249, 196, 152);
 		panelTagesAnsicht.add(panel);
 		panel.setLayout(null);
 		
@@ -234,7 +256,7 @@ public class MainView extends JFrame {
 		panelWochenAnsicht.setLayout(null);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(6, 6, 995, 311);
+		scrollPane_1.setBounds(6, 6, 1201, 414);
 		panelWochenAnsicht.add(scrollPane_1);
 		
 		tableWeekEntry = new JTable();
@@ -243,7 +265,7 @@ public class MainView extends JFrame {
 
 	            },
 	            new String [] {
-	                "Entry ID", "Entry Subject", "Projekt ID", "Workpackage", "Datum", "Startzeit", "Endzeit", "Stunden"
+	            		"T-ID", "P-ID","WP-ID", "P-Nr","Projekt Name", "Workpackage Name", "Bezeichnung", "Datum", "Startzeit", "Endzeit", "Stunden"
 	            }
 	        ) {
 				private static final long serialVersionUID = -5060001140943749394L;
@@ -256,9 +278,13 @@ public class MainView extends JFrame {
 	                java.lang.String.class,
 	                java.lang.String.class,
 	                java.lang.String.class,
+	                java.lang.String.class,
 	                java.lang.String.class
 	            };
 	            boolean[] canEdit = new boolean [] {
+	                false,
+	                false,
+	                false,
 	                false,
 	                false,
 	                false,
@@ -278,6 +304,10 @@ public class MainView extends JFrame {
 	            }
 	        });
 		scrollPane_1.setViewportView(tableWeekEntry);
+		
+		
+		restfunction.queryTracks();
+		updateTable(tableTodayEntry);
 	}
 	
 	
@@ -288,5 +318,36 @@ public class MainView extends JFrame {
 			loginSequence();
 		}
 	}
-	
+
+    private String castTableValues(JTable table, int i) {
+        return (String)table.getModel().getValueAt(getSelectedRow(), i);
+    }
+
+    private boolean isRowSelected() {
+        boolean isSelected = false;
+        if(getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(MainView.this, "Bitte wählen Sie einen Datensatz von der Tabelle!", "Fehler", JOptionPane.ERROR_MESSAGE);
+        } else {
+            isSelected = true;
+        }
+        return isSelected;
+    }
+    
+    private int getSelectedRow() { return tableTodayEntry.getSelectedRow(); }
+
+    private void updateTable(JTable table) {
+        tModel = (DefaultTableModel)table.getModel();
+        int rowCount = tModel.getRowCount();
+        
+        if(rowCount != 0) { //Check if any rows are present
+            for(int i = rowCount - 1; i >= 0; i--) {
+                tModel.removeRow(i);
+            }
+        }	//	"T-ID", "P-ID","WP-ID", "P-Nr","Projekt Name", "Workpackage Name", "Bezeichnung", "Datum", "Startzeit", "Endzeit", "Stunden"
+        restfunction.getEntryList().stream().forEach((a) -> {
+            tModel.addRow(new String[]{ a.getEntryId(), a.getEntryProjectId(), a.getEntryWorkPackageId(), a.getEntryProjectNr(), a.getEntryProjectName(), a.getEntryWorkPackageName(), a.getEntrySubject(), a.getEntryDate(), a.getEntryStartTime(), a.getEntryEndTime(), a.getEntryHours()});
+        });
+        table.setModel(tModel);
+    }
+    
 }
