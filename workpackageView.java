@@ -24,6 +24,8 @@ import java.awt.event.ActionEvent;
 
 public class workpackageView extends JDialog {
 
+
+	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JTable tableProjects;
 	private JTextField textFieldSearchFilter;
@@ -32,6 +34,9 @@ public class workpackageView extends JDialog {
 	
 
 	public workpackageView(Rest restfunction) {
+		
+		this.restfunction = restfunction;
+		this.restfunction.queryWorkPackages();
 		
 		this.restfunction = restfunction;
 		setResizable(false);
@@ -132,9 +137,50 @@ public class workpackageView extends JDialog {
 		JButton buttonCancel = new JButton("Abbrechen");
 		buttonCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				dispose();
 			}
 		});
 		buttonCancel.setBounds(247, 290, 117, 29);
 		contentPanel.add(buttonCancel);
 	}
+	
+	private void choseProject() {	
+    	String selectedObjectId = castTableValues(0);
+        String selectedObjectName = castTableValues(1);
+        String selectedObjectStatus = castTableValues(2);
+        
+		WorkPackage wp = new WorkPackage();
+		wp.setWorkPackageId(selectedObjectId);
+		wp.setWorkPackageName(selectedObjectName);
+		wp.setWorkPackageStatus(selectedObjectStatus);
+		
+		restfunction.setChosenWorkPackage(wp);
+		restfunction.setIsWorkPackageChosen(true);
+	}
+	
+    private boolean isRowSelected() {
+        boolean isSelected = false;
+        if(table.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(workPackageDialog.this, "Bitte wählen Sie einen Datensatz von der Tabelle!", "Fehler", JOptionPane.ERROR_MESSAGE);
+        } else {
+            isSelected = true;
+        }
+        return isSelected;
+    }
+	
+    private void loadTableContent() {
+        tModel = (DefaultTableModel)table.getModel();
+        restfunction.getChosenProject().getWorkPackageList().stream().forEach((a) -> {
+        	tModel.addRow(new String[]{ a.getWorkPackageId(), a.getWorkPackageName(), a.getWorkPackageStatus() });
+        });
+        table.setModel(tModel);
+    }
+
+    private String castTableValues(int i) {
+        return (String)table.getModel().getValueAt(getSelectedRow(), i);
+    }
+    
+    private int getSelectedRow() { 
+    	return table.getSelectedRow();
+    }
 }
