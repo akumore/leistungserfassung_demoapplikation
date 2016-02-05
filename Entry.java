@@ -21,26 +21,44 @@ public class Entry {
 
 	// Getter
 	public String getEntryId() { return entryId; }
+	
 	public String getEntryProjectId() { return entryProjectId; }
+	
 	public String getEntryProjectName() { return entryProjectName; }
+	
 	public String getEntryProjectNr() { return entryProjectNr; }
+	
 	public String getEntrySubject() { return entrySubject; }
+	
 	public String getEntryWorkPackageId() { return entryWorkPackageId; }
+	
 	public String getEntryWorkPackageName() { return entryWorkPackageName; }
+	
 	public String getEntryStartTime() { return entryStartTime; }
+	
 	public String getEntryDate() { return entryDate; }
+	
 	public String getEntryEndTime() { return entryEndTime; }
+	
 	public String getEntryHours() { return entryHours; }
+	
 	public String getEntryRecordTypeId() { return entryRecordTypeId; }
+	
 	public String getEntryRecordTypeName() { return entryRecordTypeName; }
 	
 	// Setter
 	public void setEntryId(String entryId) { this.entryId = entryId; }
+	
 	public void setEntryProjectId(String entryProjectId) { this.entryProjectId = entryProjectId; }
+	
 	public void setEntryProjectName(String entryProjectName) { this.entryProjectName = entryProjectName; }
+	
 	public void setEntryProjectNr(String entryProjectNr) { this.entryProjectNr = entryProjectNr; }
+	
 	public void setEntrySubject(String entrySubject) { this.entrySubject = entrySubject; }
+	
 	public void setEntryWorkPackageId(String entryWorkPackageId) { this.entryWorkPackageId = entryWorkPackageId; }
+	
 	public void setEntryWorkPackageName(String entryWorkPackageName) { this.entryWorkPackageName = entryWorkPackageName; }
 	
 	public void setEntryStartTime(String entryStartTime) throws ParseException {
@@ -81,8 +99,6 @@ public class Entry {
 		formattedTime = sdf.format(d);
 		this.entryEndTime = formattedTime;
 	}
-	
-	
 	
 	public void setEntryHours(double entryHours) {
 		this.entryHours = String.valueOf(entryHours);

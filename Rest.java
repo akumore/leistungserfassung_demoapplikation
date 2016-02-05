@@ -342,9 +342,7 @@ public class Rest {
             System.out.println(ioe.getMessage());
         }
     }
-    
-    
-    
+
     
     private static String getBody(InputStream inputStream) {
         String result = "";
