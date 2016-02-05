@@ -36,6 +36,9 @@ public class MainView extends JFrame {
 	private DefaultTableModel tModel;
 	
 	private JLabel labelUserEmail;
+	private JLabel labelProjectBoxDisplay;
+	
+	private JButton buttonChooseWorkpackage;
 	
 	private Rest restfunction = new Rest();
 
@@ -108,7 +111,7 @@ public class MainView extends JFrame {
 		panelTagesAnsicht.add(panelProjectBox);
 		panelProjectBox.setLayout(null);
 		
-		JLabel labelProjectBoxDisplay = new JLabel("N/A");
+		labelProjectBoxDisplay = new JLabel("N/A");
 		labelProjectBoxDisplay.setFont(new Font("Lucida Grande", Font.PLAIN, 11));
 		labelProjectBoxDisplay.setBounds(6, 6, 207, 22);
 		panelProjectBox.add(labelProjectBoxDisplay);
@@ -141,12 +144,13 @@ public class MainView extends JFrame {
 		JButton buttonChooseProject = new JButton("Projekt Auswählen");
 		buttonChooseProject.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				openProjectView();
 			}
 		});
 		buttonChooseProject.setBounds(1011, 26, 196, 45);
 		panelTagesAnsicht.add(buttonChooseProject);
 		
-		JButton buttonChooseWorkpackage = new JButton("Workpackage Auswählen");
+		buttonChooseWorkpackage = new JButton("Workpackage Auswählen");
 		buttonChooseWorkpackage.setEnabled(false);
 		buttonChooseWorkpackage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -313,7 +317,7 @@ public class MainView extends JFrame {
 	
 	private void loginSequence() {
 		loginVw.setVisible(true);
-		if(!restfunction.getAuthSuccess()) {
+		if(!restfunction.isAuthSuccess()) {
 			JOptionPane.showMessageDialog(loginVw, "Invalid username or password", "Login", JOptionPane.ERROR_MESSAGE);
 			loginSequence();
 		}
@@ -343,11 +347,25 @@ public class MainView extends JFrame {
             for(int i = rowCount - 1; i >= 0; i--) {
                 tModel.removeRow(i);
             }
-        }	//	"T-ID", "P-ID","WP-ID", "P-Nr","Projekt Name", "Workpackage Name", "Bezeichnung", "Datum", "Startzeit", "Endzeit", "Stunden"
+        }
         restfunction.getEntryList().stream().forEach((a) -> {
             tModel.addRow(new String[]{ a.getEntryId(), a.getEntryProjectId(), a.getEntryWorkPackageId(), a.getEntryProjectNr(), a.getEntryProjectName(), a.getEntryWorkPackageName(), a.getEntrySubject(), a.getEntryDate(), a.getEntryStartTime(), a.getEntryEndTime(), a.getEntryHours()});
         });
         table.setModel(tModel);
     }
     
+    private void openProjectView() {
+    	String chosenProject;
+    	
+    	projectView projectVw = new projectView(restfunction);
+    	projectVw.setLocationRelativeTo(null);
+    	projectVw.setVisible(true);
+    	
+    	if(restfunction.isProjectChosen()) {
+    		chosenProject = restfunction.getChosenProject().getProjectNr() + " " + restfunction.getChosenProject().getProjectName();
+    		labelProjectBoxDisplay.setText(chosenProject);
+    		buttonChooseWorkpackage.setEnabled(true);
+	    }
+    }
+
 }

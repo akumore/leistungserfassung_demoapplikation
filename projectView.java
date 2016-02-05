@@ -34,7 +34,7 @@ public class projectView extends JDialog {
 	public projectView(Rest restfunction) {
 		
 		this.restfunction = restfunction;
-		
+		this.restfunction.queryProjects();
 		
 		setResizable(false);		
 		setLocationRelativeTo(null);
@@ -126,6 +126,10 @@ public class projectView extends JDialog {
 		JButton buttonChoose = new JButton("Auswahl");
 		buttonChoose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(!isRowSelected()) { return; }
+				choseProject();
+				JOptionPane.showMessageDialog(projectView.this, "Projekt ausgewählt!", "Projektauswahl", JOptionPane.INFORMATION_MESSAGE);
+				dispose();
 			}
 		});
 		buttonChoose.setBounds(6, 294, 117, 29);
@@ -134,9 +138,54 @@ public class projectView extends JDialog {
 		JButton buttonCancel = new JButton("Abbrechen");
 		buttonCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				dispose();
 			}
 		});
 		buttonCancel.setBounds(289, 294, 117, 29);
 		contentPanel.add(buttonCancel);
+		
+		loadTableContent();
+		
 	}
+	
+	private void choseProject() {
+		
+    	String selectedObjectId = castTableValues(0);
+    	String selectedObjectNr = castTableValues(1);
+        String selectedObjectName = castTableValues(2);
+        
+		Project project = new Project();
+		project.setProjectId(selectedObjectId);
+		project.setProjectNr(selectedObjectNr);
+		project.setProjectName(selectedObjectName);
+		
+		restfunction.setChosenProject(project);
+		restfunction.setProjectChosen(true);
+	}
+	
+    private boolean isRowSelected() {
+        boolean isSelected = false;
+        if(tableProjects.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(projectView.this, "Bitte wählen Sie einen Datensatz von der Tabelle!", "Fehler", JOptionPane.ERROR_MESSAGE);
+        } else {
+            isSelected = true;
+        }
+        return isSelected;
+    }
+	
+    private void loadTableContent() {
+        tModel = (DefaultTableModel)tableProjects.getModel();
+        restfunction.getProjectList().stream().forEach((a) -> {
+        	tModel.addRow(new String[]{ a.getProjectId(), a.getProjectNr(), a.getProjectName() });
+        });
+        tableProjects.setModel(tModel);
+    }
+
+    private String castTableValues(int i) {
+        return (String)tableProjects.getModel().getValueAt(getSelectedRow(), i);
+    }
+    
+    private int getSelectedRow() { 
+    	return tableProjects.getSelectedRow();
+    }
 }
