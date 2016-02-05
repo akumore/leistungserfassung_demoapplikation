@@ -15,21 +15,22 @@ import java.awt.event.ActionEvent;
 
 public class entryInsertView extends JDialog {
 
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
+	
 	private Rest restfunction;
+	
 	private JTextField textFieldStartTime;
 	private JTextField textFieldEndTime;
 	private JTextField textFieldSubject;
-
+	
 	public entryInsertView(Rest restfunction) {
-		setUndecorated(true);
 		
 		this.restfunction = restfunction;
 		
+		
+		setUndecorated(true);
 		setResizable(false);
 		setModal(true);
 		
@@ -73,7 +74,7 @@ public class entryInsertView extends JDialog {
 		contentPanel.add(panelChosenProjectBox);
 		panelChosenProjectBox.setLayout(null);
 		
-		JLabel labelChosenProject = new JLabel("N/A");
+		JLabel labelChosenProject = new JLabel(restfunction.getChosenProject().getProjectNr() + " " + restfunction.getChosenProject().getProjectName());
 		labelChosenProject.setFont(new Font("Lucida Grande", Font.PLAIN, 9));
 		labelChosenProject.setHorizontalAlignment(SwingConstants.CENTER);
 		labelChosenProject.setBounds(6, 6, 158, 16);
@@ -85,7 +86,7 @@ public class entryInsertView extends JDialog {
 		contentPanel.add(panelChosenWorkPackageBox);
 		panelChosenWorkPackageBox.setLayout(null);
 		
-		JLabel labelChosenWorkpackage = new JLabel("N/A");
+		JLabel labelChosenWorkpackage = new JLabel(restfunction.getChosenWorkPackage().getWorkPackageName());
 		labelChosenWorkpackage.setHorizontalAlignment(SwingConstants.CENTER);
 		labelChosenWorkpackage.setFont(new Font("Lucida Grande", Font.PLAIN, 9));
 		labelChosenWorkpackage.setBounds(6, 6, 158, 16);

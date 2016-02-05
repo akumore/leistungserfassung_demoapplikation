@@ -32,8 +32,10 @@ public class MainView extends JFrame {
 	private JPanel contentPane;
 	private JTable tableTodayEntry;
 	private JTable tableWeekEntry;
-	private loginView loginVw;
+	
 	private DefaultTableModel tModel;
+	
+	private loginView loginVw;
 	
 	private JLabel labelUserEmail;
 	private JLabel labelProjectBoxDisplay;
@@ -235,6 +237,7 @@ public class MainView extends JFrame {
 		buttonCreateEntry.setEnabled(false);
 		buttonCreateEntry.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				openEntryView();
 			}
 		});
 		buttonCreateEntry.setBounds(6, 6, 184, 39);
@@ -382,5 +385,10 @@ public class MainView extends JFrame {
     		buttonCreateEntry.setEnabled(true);
     	}
     }
-
+    
+    private void openEntryView() {
+    	entryInsertView entryVw = new entryInsertView(restfunction);
+    	entryVw.setLocationRelativeTo(null);
+    	entryVw.setVisible(true);
+    }
 }
