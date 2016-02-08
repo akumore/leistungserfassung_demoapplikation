@@ -21,6 +21,7 @@ import javax.swing.border.BevelBorder;
 import java.awt.SystemColor;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
+import java.util.Date;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 import java.awt.event.MouseAdapter;
@@ -253,6 +254,12 @@ public class MainView extends JFrame {
 		JButton buttonUpdateEntry = new JButton("Bearbeiten");
 		buttonUpdateEntry.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(!isRowSelected()) { return; }
+				try {
+					openEditView();
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 		buttonUpdateEntry.setBounds(6, 57, 184, 39);
@@ -413,6 +420,39 @@ public class MainView extends JFrame {
     		restfunction.queryWeekTracks();
     		updateTable(tableWeekEntry);
     		restfunction.setCreatedEntry(false);
+    	}
+    }
+    
+    private void openEditView() throws ParseException {
+
+    	String selectedObjectId = castTableValues(tableTodayEntry, 0);
+    	String selectedObjectStartTime = castTableValues(tableTodayEntry, 8);
+    	String selectedObjectDate = castTableValues(tableTodayEntry, 7);
+    	String selectedObjectEndTime = castTableValues(tableTodayEntry, 9);
+    	String selectedObjectSubject = castTableValues(tableTodayEntry, 6);
+    	String selectedObjectProjectNumber = castTableValues(tableTodayEntry, 3);
+    	String selectedObjectProjectName = castTableValues(tableTodayEntry, 4);
+    	String selectedObjectWorkpackageName = castTableValues(tableTodayEntry, 5);
+    	
+    	updateView updateVw = new updateView(restfunction, 
+    										 selectedObjectId, 
+    										 selectedObjectStartTime, 
+    										 selectedObjectDate, 
+    										 selectedObjectEndTime, 
+    										 selectedObjectSubject, 
+    										 selectedObjectProjectNumber, 
+    										 selectedObjectProjectName,
+    										 selectedObjectWorkpackageName);
+    	
+    	updateVw.setLocationRelativeTo(null);
+    	updateVw.setVisible(true);
+    	
+    	if(restfunction.isUpdated()) {
+    		restfunction.queryDayTracks();
+    		updateTable(tableTodayEntry);
+    		restfunction.queryWeekTracks();
+    		updateTable(tableWeekEntry);
+    		restfunction.setUpdated(false);
     	}
     }
 }
