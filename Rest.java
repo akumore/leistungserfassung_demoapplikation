@@ -680,7 +680,34 @@ public class Rest {
         }
     }
     
-    
+        public void deleteEntry(String eId) {
+        System.out.println("\n_______________ Entry DELETE _______________");
+
+        String uri = baseUri + "/sobjects/Time_Tracking__c/" + eId;
+        try {
+            
+            HttpClient httpClient = HttpClientBuilder.create().build();
+ 
+            HttpDelete httpDelete = new HttpDelete(uri);
+            httpDelete.addHeader(oauthHeader);
+            httpDelete.addHeader(prettyPrintHeader);
+ 
+            //Make the request
+            HttpResponse response = httpClient.execute(httpDelete);
+ 
+            //Process the response
+            int statusCode = response.getStatusLine().getStatusCode();
+            if (statusCode == 204) {
+                System.out.println("Deleted the entry successfully.");
+            } else {
+                System.out.println("Entry delete NOT successful. Status code is " + statusCode);
+            }
+        } catch (IOException | NullPointerException ioe) {
+            System.out.println(ioe.getMessage());
+        }
+    }
+
+
     private static String getBody(InputStream inputStream) {
         String result = "";
         try (BufferedReader in = new BufferedReader(new InputStreamReader(inputStream))) {
@@ -694,7 +721,6 @@ public class Rest {
         }
         return result;
     }
-    
 }
     
  

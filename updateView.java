@@ -72,7 +72,6 @@ public class updateView extends JDialog {
 		}
 		{
 			JButton buttonSave = new JButton("Speichern");
-			buttonSave.requestFocus();
 			buttonSave.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if(!areFieldsEmpty()) {
@@ -86,7 +85,6 @@ public class updateView extends JDialog {
 							dispose();
 							
 						} catch (ParseException e1) {
-							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
 					} else {
@@ -149,6 +147,7 @@ public class updateView extends JDialog {
 		contentPanel.add(textFieldStartTime);
 		textFieldStartTime.setColumns(10);
 		textFieldStartTime.setText(Starttime);
+		textFieldStartTime.setFocusTraversalKeysEnabled(false);
 		
 		datePicker = new JDateChooser();
 		datePicker.setBounds(236, 111, 156, 26);
@@ -192,11 +191,12 @@ public class updateView extends JDialog {
 		textFieldSubject.setColumns(10);
 		textFieldSubject.setBounds(176, 166, 217, 26);
 		textFieldSubject.setText(subject);
+		textFieldSubject.requestFocus();
 		contentPanel.add(textFieldSubject);
 		
 		labelEntryId = new JLabel(entryId);
 		labelEntryId.setFont(new Font("Lucida Grande", Font.ITALIC, 10));
-		labelEntryId.setBounds(157, 24, 61, 16);
+		labelEntryId.setBounds(157, 24, 127, 16);
 		contentPanel.add(labelEntryId);
 	}
 	
@@ -242,6 +242,8 @@ public class updateView extends JDialog {
 	private void formatTime(JTextField textField){
 		String inputText = textField.getText();
 		
+		
+		
 		if(!inputText.isEmpty()) {
 			if(isNumeric(inputText)) {
 			
@@ -256,7 +258,6 @@ public class updateView extends JDialog {
 					String formattedTime = sdf.format(d);
 					textField.setText(formattedTime);
 				} catch (ParseException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			} else {

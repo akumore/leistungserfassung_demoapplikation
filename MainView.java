@@ -268,6 +268,12 @@ public class MainView extends JFrame {
 		JButton buttonDeleteEntry = new JButton("Löschen");
 		buttonDeleteEntry.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(!isRowSelected()) { return; }
+				try {
+					deleteEntry();
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 		buttonDeleteEntry.setBounds(6, 108, 184, 39);
@@ -454,5 +460,20 @@ public class MainView extends JFrame {
     		updateTable(tableWeekEntry);
     		restfunction.setUpdated(false);
     	}
+    }
+    
+    private void deleteEntry() throws ParseException {
+        int selectedOption = JOptionPane.showConfirmDialog(null, 
+                                  "Möchten Sie den ausgewählten Datensatz löschen?", 
+                                  "Löschen", 
+                                  JOptionPane.YES_NO_OPTION); 
+        if(selectedOption == JOptionPane.YES_OPTION) {
+            String selectedObjectId = castTableValues(tableTodayEntry, 0);
+            restfunction.deleteEntry(selectedObjectId);
+            restfunction.queryDayTracks();
+            restfunction.queryWeekTracks();
+            updateTable(tableTodayEntry);
+            updateTable(tableWeekEntry);
+        }
     }
 }

@@ -20,6 +20,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class entryInsertView extends JDialog {
 
@@ -49,7 +51,7 @@ public class entryInsertView extends JDialog {
 		setUndecorated(true);
 		setResizable(false);
 		setModal(true);
-		
+
 		setLocationRelativeTo(null);
 		
 		setBounds(100, 100, 429, 244);
@@ -127,15 +129,23 @@ public class entryInsertView extends JDialog {
 		panelChosenWorkPackageBox.add(labelChosenWorkpackage);
 		
 		textFieldStartTime = new JTextField();
+		textFieldStartTime.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				textFieldStartTime.setText(null);
+			}
+		});
+		textFieldStartTime.setFocusTraversalKeysEnabled(false);
 		textFieldStartTime.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				int key = e.getKeyCode();
-			    if (key == KeyEvent.VK_TAB) {
+			    if (e.getKeyCode() == KeyEvent.VK_TAB) {
 			        formatTime(textFieldStartTime);
+			        textFieldEndTime.requestFocus();
 			    }
-			    else if(key == KeyEvent.VK_ENTER){
+			    else if(e.getKeyCode() == KeyEvent.VK_ENTER){
 			    	formatTime(textFieldStartTime);
+			    	textFieldEndTime.requestFocus();
 			    }
 			}
 		});
@@ -149,22 +159,30 @@ public class entryInsertView extends JDialog {
 		
 		Date date = new Date();
 		datePicker.setDate(date);
-		//datePicker.setDateFormatString(dateFormat.format(date));
 		
 		JLabel labelStartTimeDate = new JLabel("Startzeit / Datum");
 		labelStartTimeDate.setBounds(18, 116, 117, 16);
 		contentPanel.add(labelStartTimeDate);
 		
 		textFieldEndTime = new JTextField();
+		textFieldEndTime.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				textFieldEndTime.setText(null);
+			}
+		});
+		textFieldEndTime.setFocusTraversalKeysEnabled(false);
 		textFieldEndTime.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				int key = e.getKeyCode();
 			    if (key == KeyEvent.VK_TAB) {
-			        formatTime(textFieldStartTime);
+			        formatTime(textFieldEndTime);
+			        textFieldSubject.requestFocus();
 			    }
 			    else if(key == KeyEvent.VK_ENTER){
-			    	formatTime(textFieldStartTime);
+			    	formatTime(textFieldEndTime);
+			    	textFieldSubject.requestFocus();
 			    }
 			}
 		});
@@ -235,14 +253,14 @@ public class entryInsertView extends JDialog {
 					String formattedTime = sdf.format(d);
 					textField.setText(formattedTime);
 				} catch (ParseException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
+					JOptionPane.showMessageDialog(entryInsertView.this, "Ein Fehler bei der Formatierung der Zeit is aufgetreten!", "Fehler", JOptionPane.ERROR_MESSAGE);
 				}
 			} else {
 				JOptionPane.showMessageDialog(entryInsertView.this, "Bitte geben Sie eine gültige Zeit ein!", "Fehler", JOptionPane.ERROR_MESSAGE);
 				textField.setText("");
 			}
-		}
+		}		
 	}
 
 	private void checkFieldValues(JTextField txtStartTime, JTextField txtEndTime, JTextField txtSubject) {
@@ -252,4 +270,3 @@ public class entryInsertView extends JDialog {
 	}
 
 }
-
