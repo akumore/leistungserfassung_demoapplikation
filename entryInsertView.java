@@ -34,8 +34,6 @@ public class entryInsertView extends JDialog {
 	private JTextField textFieldSubject;
 	
 	private boolean fieldsEmpty;
-
-	
 	
 	private JDateChooser datePicker;
 	

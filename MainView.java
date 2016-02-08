@@ -331,7 +331,6 @@ public class MainView extends JFrame {
 			restfunction.queryWeekTracks();
 			updateTable(tableWeekEntry);
 		} catch (ParseException e1) {
-
 			e1.printStackTrace();
 		}
 	}
