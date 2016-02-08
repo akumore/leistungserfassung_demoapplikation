@@ -21,13 +21,8 @@ import javax.swing.border.BevelBorder;
 import java.awt.SystemColor;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
-import java.util.Date;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ChangeEvent;
 
 public class MainView extends JFrame {
 
@@ -63,7 +58,6 @@ public class MainView extends JFrame {
 			}
 		});
 	}
-
 
 	public MainView() throws ParseException {
 		
@@ -294,8 +288,8 @@ public class MainView extends JFrame {
 	            },
 	            new String [] {
 	            		"T-ID", "P-ID","WP-ID", "P-Nr","Projekt Name", "Workpackage Name", "Bezeichnung", "Datum", "Startzeit", "Endzeit", "Stunden"
-	            }
-	        ) {
+	            }) 
+				{
 				private static final long serialVersionUID = -5060001140943749394L;
 				@SuppressWarnings("rawtypes")
 				Class[] types = new Class [] {
@@ -311,7 +305,8 @@ public class MainView extends JFrame {
 	                java.lang.String.class,
 	                java.lang.String.class,
 	            };
-	            boolean[] canEdit = new boolean [] {
+
+				boolean[] canEdit = new boolean [] {
 		                false,
 		                false,
 		                false,
@@ -334,9 +329,7 @@ public class MainView extends JFrame {
 	            }
 	        });
 		scrollPane_1.setViewportView(tableWeekEntry);
-		
-		
-		
+
 		restfunction.queryDayTracks();
 		updateTable(tableTodayEntry);
 	

@@ -25,7 +25,6 @@ import java.awt.event.FocusEvent;
 
 public class entryInsertView extends JDialog {
 
-
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	
@@ -82,7 +81,6 @@ public class entryInsertView extends JDialog {
 							dispose();
 							
 						} catch (ParseException e1) {
-							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
 					} else {

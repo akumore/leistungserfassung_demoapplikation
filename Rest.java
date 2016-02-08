@@ -11,8 +11,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
 import org.apache.http.Header;
 
 import org.apache.http.client.methods.HttpPost;
@@ -34,7 +32,6 @@ import org.json.JSONTokener;
 
 public class Rest {
 
-	
     private final String LOGINURL     = "https://test.salesforce.com";
     private final String GRANTSERVICE = "/services/oauth2/token?grant_type=password";
     private final String CLIENTID     = "3MVG98RqVesxRgQ6Z7Y7R1sNd0r3MCkY7GvFo9whQ8C_M2cpVtMBUCGP8VPo7qffBeOyUxUOrAkvD4ZvNkBbk";
@@ -67,8 +64,7 @@ public class Rest {
     
 
 	public Rest() {
-		benutzer = new User();
-		
+		benutzer = new User();		
 		projectChosen = false;
 		workpackageChosen = false;
 	}
@@ -118,8 +114,6 @@ public class Rest {
     
     public void setInsertError(boolean b) { this.insertError = b; }
     
-    ///////////////////////////
-
     public void setupRest() {
     	
     	// Login-URL zusammensetzen
@@ -452,9 +446,6 @@ public class Rest {
                     System.out.println(ioe.getMessage());
          }        
     }
-        
-
- 
     
     public void queryProjects() {
         System.out.println("\n_______________ Project QUERY _______________");
@@ -560,7 +551,7 @@ public class Rest {
           } catch (IOException | NullPointerException ioe) {
               System.out.println(ioe.getMessage());
           }
-      }
+    }
     
 
     public String[] getCurrentWeekDates() {
@@ -637,7 +628,6 @@ public class Rest {
             System.out.println(ioe.getMessage());
         }
     }
-
     
     public void updateEntry(String eId, String subject, String date, String startTime, String endTime) {
         System.out.println("\n_______________ Entry UPDATE _______________");
