@@ -23,6 +23,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPatch;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicHeader;
@@ -59,7 +60,9 @@ public class Rest {
     
     private boolean projectChosen;
     private boolean workpackageChosen;
+    
     private boolean createdEntry;
+    private boolean updated;
     private boolean insertError;
     
 
@@ -92,6 +95,8 @@ public class Rest {
     
     public boolean hasCreatedEntry() { return createdEntry; }
     
+    public boolean isUpdated() { return updated; }
+    
     public boolean getInsertError() { return insertError; }
     
     // Setters
@@ -108,6 +113,8 @@ public class Rest {
     public void setWorkpackageChosen(boolean b) { this.workpackageChosen = b; }
     
     public void setCreatedEntry(boolean b) { this.createdEntry = b; }
+    
+    public void setUpdated(boolean b) { this.updated = b; }
     
     public void setInsertError(boolean b) { this.insertError = b; }
     
@@ -626,6 +633,48 @@ public class Rest {
         } catch (JSONException e) {
             System.out.println("Issue creating JSON or processing results");
             System.out.println(e.toString());
+        } catch (IOException | NullPointerException ioe) {
+            System.out.println(ioe.getMessage());
+        }
+    }
+
+    
+    public void updateEntry(String eId, String subject, String date, String startTime, String endTime) {
+        System.out.println("\n_______________ Entry UPDATE _______________");
+
+        String uri = baseUri + "/sobjects/Time_Tracking__c/" + eId;
+        try {
+            JSONObject entry = new JSONObject();
+            entry.put("Subject__c", subject);
+            entry.put("Date__c", date);
+            entry.put("Start_Time_h__c", startTime);
+            entry.put("End_Time_h__c", endTime);
+            
+            System.out.println("JSON for update of entry record:\n" + entry.toString(1));
+
+            HttpClient httpClient = HttpClientBuilder.create().build();
+
+            HttpPatch httpPatch = new HttpPatch(uri);
+            httpPatch.addHeader(oauthHeader);
+            httpPatch.addHeader(prettyPrintHeader);
+            StringEntity body = new StringEntity(entry.toString(1));
+            body.setContentType("application/json");
+            httpPatch.setEntity(body);
+
+            //Make the request
+            HttpResponse response = httpClient.execute(httpPatch);
+
+            //Process the response
+            int statusCode = response.getStatusLine().getStatusCode();
+            if (statusCode == 204) {
+            	setUpdated(true);
+                System.out.println("Updated the entry successfully.");
+            } else {
+            	setUpdated(false);
+                System.out.println("Entry update NOT successfully. Status code is " + statusCode);
+            }
+        } catch (JSONException e) {
+            System.out.println("Issue creating JSON or processing results");
         } catch (IOException | NullPointerException ioe) {
             System.out.println(ioe.getMessage());
         }

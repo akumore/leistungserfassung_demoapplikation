@@ -14,20 +14,18 @@ import javax.swing.JTextField;
 import com.toedter.calendar.JDateChooser;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class entryInsertView extends JDialog {
 
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
-	
-	private Rest restfunction;
 	
 	private JTextField textFieldStartTime;
 	private JTextField textFieldEndTime;
@@ -45,8 +43,6 @@ public class entryInsertView extends JDialog {
 	public void setFieldsEmpty(boolean b) { this.fieldsEmpty = b; }
 	
 	public entryInsertView(Rest restfunction) {
-		
-		this.restfunction = restfunction;
 		
 		this.fieldsEmpty = true;
 		
@@ -131,10 +127,16 @@ public class entryInsertView extends JDialog {
 		panelChosenWorkPackageBox.add(labelChosenWorkpackage);
 		
 		textFieldStartTime = new JTextField();
-		textFieldStartTime.addFocusListener(new FocusAdapter() {
+		textFieldStartTime.addKeyListener(new KeyAdapter() {
 			@Override
-			public void focusLost(FocusEvent e) {
-				formatTime(textFieldStartTime);
+			public void keyPressed(KeyEvent e) {
+				int key = e.getKeyCode();
+			    if (key == KeyEvent.VK_TAB) {
+			        formatTime(textFieldStartTime);
+			    }
+			    else if(key == KeyEvent.VK_ENTER){
+			    	formatTime(textFieldStartTime);
+			    }
 			}
 		});
 		textFieldStartTime.setBounds(176, 111, 62, 26);
@@ -154,10 +156,16 @@ public class entryInsertView extends JDialog {
 		contentPanel.add(labelStartTimeDate);
 		
 		textFieldEndTime = new JTextField();
-		textFieldEndTime.addFocusListener(new FocusAdapter() {
+		textFieldEndTime.addKeyListener(new KeyAdapter() {
 			@Override
-			public void focusLost(FocusEvent e) {
-				formatTime(textFieldEndTime);
+			public void keyPressed(KeyEvent e) {
+				int key = e.getKeyCode();
+			    if (key == KeyEvent.VK_TAB) {
+			        formatTime(textFieldStartTime);
+			    }
+			    else if(key == KeyEvent.VK_ENTER){
+			    	formatTime(textFieldStartTime);
+			    }
 			}
 		});
 		textFieldEndTime.setColumns(10);
