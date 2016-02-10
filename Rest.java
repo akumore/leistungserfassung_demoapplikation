@@ -591,7 +591,7 @@ public class Rest {
             tt.put("Internal_Contact__c", benutzer.getInternalContactId());
             tt.put("Status__c", "Submitted by Employee");
             
-            System.out.println("JSON for car record to be inserted:\n" + tt.toString(1));
+            System.out.println("JSON for Entry record to be inserted:\n" + tt.toString(1));
 
             //Construct the objects needed for the request
             HttpClient httpClient = HttpClientBuilder.create().build();
