@@ -1,6 +1,4 @@
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -8,6 +6,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.JLabel;
@@ -24,6 +23,7 @@ import java.awt.event.ActionEvent;
 
 public class projectView extends JDialog {
 
+	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JTable tableProjects;
 	private JTextField textFieldSearchFilter;
@@ -34,7 +34,7 @@ public class projectView extends JDialog {
 	public projectView(Rest restfunction) {
 		
 		this.restfunction = restfunction;
-		
+		this.restfunction.queryProjects();
 		
 		setResizable(false);		
 		setLocationRelativeTo(null);
@@ -83,6 +83,12 @@ public class projectView extends JDialog {
 	                return canEdit [columnIndex];
 	            }
 	        });
+		TableColumnModel columnModel = tableProjects.getColumnModel();
+		columnModel.getColumn(0).setPreferredWidth(10);
+		columnModel.getColumn(1).setPreferredWidth(30);
+		columnModel.getColumn(2).setPreferredWidth(150);
+		
+		
 		TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(tableProjects.getModel());
 		tableProjects.setRowSorter(rowSorter);
 		
@@ -114,7 +120,7 @@ public class projectView extends JDialog {
 	        }
 	        @Override
 	        public void changedUpdate(DocumentEvent e) {
-	            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	            throw new UnsupportedOperationException("Not supported yet.");
 	        }
 	    });
 
@@ -126,6 +132,9 @@ public class projectView extends JDialog {
 		JButton buttonChoose = new JButton("Auswahl");
 		buttonChoose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(!isRowSelected()) { return; }
+				chooseProject();
+				dispose();
 			}
 		});
 		buttonChoose.setBounds(6, 294, 117, 29);
@@ -134,9 +143,54 @@ public class projectView extends JDialog {
 		JButton buttonCancel = new JButton("Abbrechen");
 		buttonCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				dispose();
 			}
 		});
 		buttonCancel.setBounds(289, 294, 117, 29);
 		contentPanel.add(buttonCancel);
+		
+		loadTableContent();
+		
 	}
+	
+	private void chooseProject() {
+		
+    	String selectedObjectId = castTableValues(0);
+    	String selectedObjectNr = castTableValues(1);
+        String selectedObjectName = castTableValues(2);
+        
+		Project project = new Project();
+		project.setProjectId(selectedObjectId);
+		project.setProjectNr(selectedObjectNr);
+		project.setProjectName(selectedObjectName);
+		
+		restfunction.setChosenProject(project);
+		restfunction.setProjectChosen(true);
+	}
+	
+    private boolean isRowSelected() {
+        boolean isSelected = false;
+        if(tableProjects.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(projectView.this, "Bitte wähle einen Datensatz von der Tabelle!", "Fehler", JOptionPane.ERROR_MESSAGE);
+        } else {
+            isSelected = true;
+        }
+        return isSelected;
+    }
+	
+    private void loadTableContent() {
+        tModel = (DefaultTableModel)tableProjects.getModel();
+        restfunction.getProjectList().stream().forEach((a) -> {
+        	tModel.addRow(new String[]{ a.getProjectId(), a.getProjectNr(), a.getProjectName() });
+        });
+        tableProjects.setModel(tModel);
+    }
+
+    private String castTableValues(int i) {
+        return (String)tableProjects.getModel().getValueAt(getSelectedRow(), i);
+    }
+    
+    private int getSelectedRow() { 
+    	return tableProjects.getSelectedRow();
+    }
 }

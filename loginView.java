@@ -1,6 +1,4 @@
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -18,11 +16,10 @@ import java.awt.event.ActionEvent;
 
 public class loginView extends JDialog {
 
+	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField textFieldEmail;
 	private JPasswordField textFieldPassword;
-
-
 
 	public loginView(Rest restfunction) {
 		
@@ -44,6 +41,7 @@ public class loginView extends JDialog {
 		contentPanel.add(labelLoginTitle);
 		
 		textFieldEmail = new JTextField();
+		textFieldEmail.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldEmail.setBounds(94, 71, 223, 26);
 		contentPanel.add(textFieldEmail);
 		textFieldEmail.setColumns(10);
@@ -55,6 +53,7 @@ public class loginView extends JDialog {
 		contentPanel.add(labelEmail);
 		
 		textFieldPassword = new JPasswordField();
+		textFieldPassword.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldPassword.setBounds(94, 124, 223, 26);
 		contentPanel.add(textFieldPassword);
 		
@@ -82,10 +81,11 @@ public class loginView extends JDialog {
 	            if(!txtFieldEmail.isEmpty() && !txtFieldPassword.isEmpty()) {
 	                    restfunction.getUser().setUsername(txtFieldEmail);
 	                    restfunction.getUser().setPassword(txtFieldPassword);
-	                    dispose();
+	                    restfunction.setupRest();
                 } else {
                     JOptionPane.showMessageDialog(loginView.this, "Invalid username or password", "Login", JOptionPane.ERROR_MESSAGE);
                 }
+	            dispose();
 			}
 		});
 		buttonLogin.setBounds(143, 162, 123, 34);
@@ -94,7 +94,7 @@ public class loginView extends JDialog {
 		JButton buttonCancel = new JButton("Abbrechen");
 		buttonCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dispose();
+				System.exit(-1);
 			}
 		});
 		buttonCancel.setFont(new Font("Lucida Grande", Font.PLAIN, 9));
