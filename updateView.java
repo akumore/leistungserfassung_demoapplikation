@@ -88,7 +88,7 @@ public class updateView extends JDialog {
 							e1.printStackTrace();
 						}
 					} else {
-						JOptionPane.showMessageDialog(updateView.this, "Bitte füllen Sie alle Felder aus!", "Fehler", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(updateView.this, "Bitte fülle alle Felder aus!", "Fehler", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			});
@@ -261,7 +261,7 @@ public class updateView extends JDialog {
 					e1.printStackTrace();
 				}
 			} else {
-				JOptionPane.showMessageDialog(updateView.this, "Bitte geben Sie eine gültige Zeit ein!", "Fehler", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(updateView.this, "Bitte gib eine gültige Zeit ein!", "Fehler", JOptionPane.ERROR_MESSAGE);
 				textField.setText("");
 			}
 		}

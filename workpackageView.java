@@ -171,7 +171,7 @@ public class workpackageView extends JDialog {
     private boolean isRowSelected() {
         boolean isSelected = false;
         if(tablePackages.getSelectedRow() == -1) {
-            JOptionPane.showMessageDialog(workpackageView.this, "Bitte wählen Sie einen Datensatz von der Tabelle!", "Fehler", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(workpackageView.this, "Bitte wähle einen Datensatz von der Tabelle!", "Fehler", JOptionPane.ERROR_MESSAGE);
         } else {
             isSelected = true;
         }

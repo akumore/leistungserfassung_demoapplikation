@@ -171,7 +171,7 @@ public class projectView extends JDialog {
     private boolean isRowSelected() {
         boolean isSelected = false;
         if(tableProjects.getSelectedRow() == -1) {
-            JOptionPane.showMessageDialog(projectView.this, "Bitte wählen Sie einen Datensatz von der Tabelle!", "Fehler", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(projectView.this, "Bitte wähle einen Datensatz von der Tabelle!", "Fehler", JOptionPane.ERROR_MESSAGE);
         } else {
             isSelected = true;
         }
