@@ -113,7 +113,7 @@ public class MainView extends JFrame {
 		panelTagesAnsicht.add(panelProjectBox);
 		panelProjectBox.setLayout(null);
 		
-		labelProjectBoxDisplay = new JLabel("Bitte auswählen");
+		labelProjectBoxDisplay = new JLabel("- Bitte auswählen -");
 		labelProjectBoxDisplay.setFont(new Font("Lucida Grande", Font.PLAIN, 11));
 		labelProjectBoxDisplay.setBounds(6, 6, 207, 22);
 		panelProjectBox.add(labelProjectBoxDisplay);
@@ -143,7 +143,7 @@ public class MainView extends JFrame {
 		labelWorkpackagBox.setBounds(307, 5, 94, 16);
 		panelTagesAnsicht.add(labelWorkpackagBox);
 		
-		JButton buttonChooseProject = new JButton("Projekt Auswählen");
+		JButton buttonChooseProject = new JButton("Projekt auswählen");
 		buttonChooseProject.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				openProjectView();
@@ -152,7 +152,7 @@ public class MainView extends JFrame {
 		buttonChooseProject.setBounds(1011, 26, 196, 45);
 		panelTagesAnsicht.add(buttonChooseProject);
 		
-		buttonChooseWorkpackage = new JButton("Workpackage Auswählen");
+		buttonChooseWorkpackage = new JButton("Workpackage auswählen");
 		buttonChooseWorkpackage.setEnabled(false);
 		buttonChooseWorkpackage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -356,7 +356,7 @@ public class MainView extends JFrame {
     private boolean isRowSelected() {
         boolean isSelected = false;
         if(getSelectedRow() == -1) {
-            JOptionPane.showMessageDialog(MainView.this, "Bitte wählen Sie einen Datensatz von der Tabelle!", "Fehler", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(MainView.this, "Bitte wähle einen Datensatz von der Tabelle!", "Fehler", JOptionPane.ERROR_MESSAGE);
         } else {
             isSelected = true;
         }
@@ -457,7 +457,7 @@ public class MainView extends JFrame {
     
     private void deleteEntry() throws ParseException {
         int selectedOption = JOptionPane.showConfirmDialog(null, 
-                                  "Möchten Sie den ausgewählten Datensatz löschen?", 
+                                  "Möchtest du den ausgewählten Datensatz löschen?", 
                                   "Löschen", 
                                   JOptionPane.YES_NO_OPTION); 
         if(selectedOption == JOptionPane.YES_OPTION) {

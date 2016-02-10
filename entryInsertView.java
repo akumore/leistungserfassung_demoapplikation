@@ -84,7 +84,7 @@ public class entryInsertView extends JDialog {
 							e1.printStackTrace();
 						}
 					} else {
-						JOptionPane.showMessageDialog(entryInsertView.this, "Bitte füllen Sie alle Felder aus!", "Fehler", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(entryInsertView.this, "Bitte fülle alle Felder aus!", "Fehler", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			});
@@ -255,7 +255,7 @@ public class entryInsertView extends JDialog {
 					JOptionPane.showMessageDialog(entryInsertView.this, "Ein Fehler bei der Formatierung der Zeit is aufgetreten!", "Fehler", JOptionPane.ERROR_MESSAGE);
 				}
 			} else {
-				JOptionPane.showMessageDialog(entryInsertView.this, "Bitte geben Sie eine gültige Zeit ein!", "Fehler", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(entryInsertView.this, "Bitte gib eine gültige Zeit ein!", "Fehler", JOptionPane.ERROR_MESSAGE);
 				textField.setText("");
 			}
 		}		
