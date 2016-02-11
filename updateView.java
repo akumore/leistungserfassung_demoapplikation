@@ -198,6 +198,11 @@ public class updateView extends JDialog {
 		labelEntryId.setFont(new Font("Lucida Grande", Font.ITALIC, 10));
 		labelEntryId.setBounds(157, 24, 127, 16);
 		contentPanel.add(labelEntryId);
+		
+		JLabel lblZb = new JLabel("z.B.: 0815");
+		lblZb.setFont(new Font("Lucida Grande", Font.PLAIN, 9));
+		lblZb.setBounds(176, 94, 61, 16);
+		contentPanel.add(lblZb);
 	}
 	
 	private boolean isNumeric(String s) {  

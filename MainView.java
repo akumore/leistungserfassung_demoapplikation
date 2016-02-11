@@ -213,14 +213,14 @@ public class MainView extends JFrame {
 	            }
 	        });		
 		
-		TableColumnModel columnModel = tableTodayEntry.getColumnModel();
-		columnModel.getColumn(0).setPreferredWidth(10);
-		columnModel.getColumn(1).setPreferredWidth(10);
-		columnModel.getColumn(2).setPreferredWidth(10);
-		columnModel.getColumn(3).setPreferredWidth(15);
-		columnModel.getColumn(4).setPreferredWidth(150);
-		columnModel.getColumn(5).setPreferredWidth(150);
-		columnModel.getColumn(6).setPreferredWidth(150);
+		TableColumnModel columnTodayModel = tableTodayEntry.getColumnModel();
+		columnTodayModel.getColumn(0).setPreferredWidth(10);
+		columnTodayModel.getColumn(1).setPreferredWidth(10);
+		columnTodayModel.getColumn(2).setPreferredWidth(10);
+		columnTodayModel.getColumn(3).setPreferredWidth(15);
+		columnTodayModel.getColumn(4).setPreferredWidth(150);
+		columnTodayModel.getColumn(5).setPreferredWidth(150);
+		columnTodayModel.getColumn(6).setPreferredWidth(150);
 		
 		scrollPane.setViewportView(tableTodayEntry);
 		
@@ -328,6 +328,16 @@ public class MainView extends JFrame {
 	                return canEdit [columnIndex];
 	            }
 	        });
+		
+		TableColumnModel columnWeekModel = tableWeekEntry.getColumnModel();
+		columnWeekModel.getColumn(0).setPreferredWidth(10);
+		columnWeekModel.getColumn(1).setPreferredWidth(10);
+		columnWeekModel.getColumn(2).setPreferredWidth(10);
+		columnWeekModel.getColumn(3).setPreferredWidth(15);
+		columnWeekModel.getColumn(4).setPreferredWidth(150);
+		columnWeekModel.getColumn(5).setPreferredWidth(150);
+		columnWeekModel.getColumn(6).setPreferredWidth(150);
+		
 		scrollPane_1.setViewportView(tableWeekEntry);
 
 		restfunction.queryDayTracks();

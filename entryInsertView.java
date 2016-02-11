@@ -200,6 +200,11 @@ public class entryInsertView extends JDialog {
 		textFieldSubject.setColumns(10);
 		textFieldSubject.setBounds(176, 166, 217, 26);
 		contentPanel.add(textFieldSubject);
+		
+		JLabel lblZb = new JLabel("z.B.: 0815");
+		lblZb.setFont(new Font("Lucida Grande", Font.PLAIN, 9));
+		lblZb.setBounds(176, 94, 46, 16);
+		contentPanel.add(lblZb);
 	}
 	
 	private boolean isNumeric(String s) {  
@@ -266,5 +271,4 @@ public class entryInsertView extends JDialog {
 			setFieldsEmpty(false);
 		}
 	}
-
 }
