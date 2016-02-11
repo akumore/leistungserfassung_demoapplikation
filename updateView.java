@@ -183,8 +183,8 @@ public class updateView extends JDialog {
 		labelEndTime.setBounds(18, 143, 117, 16);
 		contentPanel.add(labelEndTime);
 		
-		JLabel labelSubject = new JLabel("Bezeichnung");
-		labelSubject.setBounds(18, 171, 84, 16);
+		JLabel labelSubject = new JLabel("Task Beschreibung");
+		labelSubject.setBounds(18, 171, 127, 16);
 		contentPanel.add(labelSubject);
 		
 		textFieldSubject = new JTextField();
