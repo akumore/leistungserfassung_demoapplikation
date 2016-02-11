@@ -21,6 +21,7 @@ import javax.swing.border.BevelBorder;
 import java.awt.SystemColor;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 
@@ -341,11 +342,11 @@ public class MainView extends JFrame {
 		scrollPane_1.setViewportView(tableWeekEntry);
 
 		restfunction.queryDayTracks();
-		updateTable(tableTodayEntry);
+		updateTable(tableTodayEntry, restfunction.getEntryDayList());
 	
 		try {
 			restfunction.queryWeekTracks();
-			updateTable(tableWeekEntry);
+			updateTable(tableWeekEntry, restfunction.getEntryWeekList());
 		} catch (ParseException e1) {
 			e1.printStackTrace();
 		}
@@ -375,7 +376,7 @@ public class MainView extends JFrame {
     
     private int getSelectedRow() { return tableTodayEntry.getSelectedRow(); }
 
-    private void updateTable(JTable table) {
+    private void updateTable(JTable table, List<Entry> list) {
         tModel = (DefaultTableModel)table.getModel();
         int rowCount = tModel.getRowCount();
         
@@ -384,8 +385,18 @@ public class MainView extends JFrame {
                 tModel.removeRow(i);
             }
         }
-        restfunction.getEntryDayList().stream().forEach((a) -> {
-            tModel.addRow(new String[]{ a.getEntryId(), a.getEntryProjectId(), a.getEntryWorkPackageId(), a.getEntryProjectNr(), a.getEntryProjectName(), a.getEntryWorkPackageName(), a.getEntrySubject(), a.getEntryDate(), a.getEntryStartTime(), a.getEntryEndTime(), a.getEntryHours()});
+        list.stream().forEach((a) -> {
+            tModel.addRow(new String[]{ a.getEntryId(), 
+            							a.getEntryProjectId(), 
+            							a.getEntryWorkPackageId(),
+            							a.getEntryProjectNr(),
+            							a.getEntryProjectName(),
+            							a.getEntryWorkPackageName(),
+            							a.getEntrySubject(),
+            							a.getEntryDate(),
+            							a.getEntryStartTime(),
+            							a.getEntryEndTime(),
+            							a.getEntryHours()});
         });
         table.setModel(tModel);
     }
@@ -425,9 +436,9 @@ public class MainView extends JFrame {
     	
     	if(restfunction.hasCreatedEntry()) {
     		restfunction.queryDayTracks();
-    		updateTable(tableTodayEntry);
+    		updateTable(tableTodayEntry, restfunction.getEntryDayList());
     		restfunction.queryWeekTracks();
-    		updateTable(tableWeekEntry);
+    		updateTable(tableWeekEntry, restfunction.getEntryWeekList());
     		restfunction.setCreatedEntry(false);
     	}
     }
@@ -458,9 +469,9 @@ public class MainView extends JFrame {
     	
     	if(restfunction.isUpdated()) {
     		restfunction.queryDayTracks();
-    		updateTable(tableTodayEntry);
+    		updateTable(tableTodayEntry, restfunction.getEntryDayList());
     		restfunction.queryWeekTracks();
-    		updateTable(tableWeekEntry);
+    		updateTable(tableWeekEntry, restfunction.getEntryWeekList());
     		restfunction.setUpdated(false);
     	}
     }
@@ -475,8 +486,8 @@ public class MainView extends JFrame {
             restfunction.deleteEntry(selectedObjectId);
             restfunction.queryDayTracks();
             restfunction.queryWeekTracks();
-            updateTable(tableTodayEntry);
-            updateTable(tableWeekEntry);
+            updateTable(tableTodayEntry, restfunction.getEntryDayList());
+            updateTable(tableWeekEntry, restfunction.getEntryWeekList());
         }
     }
 }
